@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propello — AI Proposal Builder for Freelancers</title>
+    <meta name="description" content="Win more clients in half the time. Paste in the job description, get a tailored proposal in 30 seconds.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* === RESET & BASE === */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0f;
+            color: #e2e8f0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* === LOGO === */
+        .logo-mark {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            padding: 16px 24px;
+        }
+        .logo-icon {
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 900;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .logo-text { display: flex; flex-direction: column; }
+        .logo-top { font-size: 0.95rem; font-weight: 900; color: #fff; letter-spacing: 0.03em; line-height: 1.2; }
+        .logo-bottom { font-size: 0.65rem; font-weight: 600; color: #6C63FF; letter-spacing: 0.06em; text-transform: uppercase; }
+
+        /* === NAV === */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(108, 99, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: color 0.2s;
+            letter-spacing: 0.02em;
+        }
+        .nav-links a:hover { color: #6C63FF; }
+        .nav-cta {
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            color: #fff !important;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 700 !important;
+        }
+        .nav-cta:hover { opacity: 0.9; color: #fff !important; }
+
+        /* === HERO === */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(108, 99, 255, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .hero-eyebrow {
+            display: inline-block;
+            background: rgba(108, 99, 255, 0.1);
+            border: 1px solid rgba(108, 99, 255, 0.2);
+            color: #6C63FF;
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+        .hero h1 {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            max-width: 900px;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: #94a3b8;
+            max-width: 650px;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 18px 40px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(108, 99, 255, 0.3); }
+        .hero-trust {
+            margin-top: 32px;
+            display: flex;
+            gap: 40px;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .hero-trust span { display: flex; align-items: center; gap: 8px; }
+
+        /* === SECTIONS === */
+        section { padding: 100px 24px; max-width: 1100px; margin: 0 auto; }
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #6C63FF;
+            margin-bottom: 16px;
+        }
+        section h2 {
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        section h2 .highlight {
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        section p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 700px;
+        }
+
+        /* === PROBLEM === */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .problem-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(108, 99, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+        }
+        .problem-card .icon { font-size: 2rem; margin-bottom: 16px; }
+        .problem-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: #f1f5f9; }
+        .problem-card p { font-size: 0.95rem; color: #64748b; }
+
+        /* === MECHANISM === */
+        .mechanism-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .step-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(108, 99, 255, 0.15);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+        }
+        .step-num {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #fff;
+            margin: 0 auto 16px;
+        }
+        .step-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: #f1f5f9; }
+        .step-card p { font-size: 0.9rem; color: #64748b; }
+
+        /* === FEATURES / WHAT YOU GET === */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(108, 99, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+        }
+        .feature-card .icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: #f1f5f9; }
+        .feature-card p { font-size: 0.9rem; color: #64748b; }
+
+        /* === OBJECTIONS === */
+        .objections { margin-top: 48px; display: flex; flex-direction: column; gap: 16px; }
+        .objection-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(108, 99, 255, 0.08);
+            border-radius: 12px;
+            padding: 24px 32px;
+        }
+        .objection-item h4 { font-size: 0.95rem; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+        .objection-item p { font-size: 0.9rem; color: #64748b; }
+
+        /* === PROOF / TESTIMONIALS === */
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .testimonial {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(108, 99, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+        }
+        .testimonial .quote { font-size: 1rem; color: #cbd5e1; font-style: italic; margin-bottom: 16px; line-height: 1.6; }
+        .testimonial .author { font-size: 0.85rem; font-weight: 700; color: #f1f5f9; }
+        .testimonial .author span { color: #64748b; font-weight: 400; }
+
+        /* === CTA SECTION === */
+        .cta-section {
+            text-align: center;
+            padding: 120px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(108, 99, 255, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .cta-section h2 { max-width: 700px; margin: 0 auto 20px; }
+        .cta-section p { max-width: 500px; margin: 0 auto 40px; }
+
+        /* === FOOTER === */
+        footer {
+            border-top: 1px solid rgba(108, 99, 255, 0.08);
+            padding: 40px 24px;
+            text-align: center;
+            color: #475569;
+            font-size: 0.8rem;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            nav { flex-direction: column; padding: 12px 16px; }
+            .nav-links { display: none; }
+            .hero { min-height: auto; padding: 60px 20px; }
+            .hero-trust { flex-direction: column; gap: 12px; }
+            .problem-grid, .mechanism-steps, .features-grid, .proof-grid { grid-template-columns: 1fr; }
+            section { padding: 60px 20px; }
+        }
+
+        /* === WAITLIST FORM === */
+        .waitlist-form {
+            display: flex;
+            gap: 12px;
+            max-width: 450px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        .waitlist-form input {
+            flex: 1;
+            min-width: 220px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(108, 99, 255, 0.2);
+            background: rgba(255,255,255,0.05);
+            color: #e2e8f0;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .waitlist-form input:focus { border-color: #6C63FF; }
+        .waitlist-form input::placeholder { color: #475569; }
+        .waitlist-form button {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #6C63FF, #3B82F6);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .waitlist-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108, 99, 255, 0.3); }
+    </style>
+</head>
+<body>
+
+    <!-- === NAV === -->
+    <nav>
+        <a href="/" class="logo-mark">
+            <div class="logo-icon">P</div>
+            <div class="logo-text">
+                <span class="logo-top">PROPELLO</span>
+                <span class="logo-bottom">AI PROPOSAL BUILDER</span>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="#how">How It Works</a>
+            <a href="#features">What You Get</a>
+            <a href="#proof">Results</a>
+            <a href="#cta" class="nav-cta">Get Propello</a>
+        </div>
+    </nav>
+
+    <!-- === HERO === -->
+    <section class="hero">
+        <span class="hero-eyebrow">⚡ AI-Powered Proposal Builder</span>
+        <h1>
+            Win More Clients<br>
+            in <span class="highlight">Half the Time</span>
+        </h1>
+        <p class="hero-sub">
+            Paste in the job description. Get a tailored, high-converting proposal in 30 seconds.<br>
+            No templates. No guesswork. Just more wins.
+        </p>
+        <a href="#cta" class="hero-cta">
+            Get Propello Now →
+        </a>
+        <div class="hero-trust">
+            <span>⚡ 30-Second Proposals</span>
+            <span>🎯 Tailored to Every Job</span>
+            <span>📈 Higher Win Rates</span>
+        </div>
+    </section>
+
+    <!-- === PROBLEM === -->
+    <section id="problem">
+        <div class="section-label">The Problem</div>
+        <h2>Why Most Freelancers <span class="highlight">Lose the Pitch</span> Before They Start</h2>
+        <p>Every freelancer knows the feeling. You find the perfect job post. You spend 45 minutes crafting a proposal. You hit send. And then... nothing. Silence.</p>
+
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="icon">⏱️</div>
+                <h3>30+ Minutes Per Proposal</h3>
+                <p>Writing a single quality proposal takes 30–60 minutes. Send 5 a day? That's 4+ hours just on proposals.</p>
+            </div>
+            <div class="problem-card">
+                <div class="icon">📝</div>
+                <h3>Generic Templates Don't Work</h3>
+                <p>Clients can smell a template from a mile away. Generic proposals get generic results — ignored.</p>
+            </div>
+            <div class="problem-card">
+                <div class="icon">😩</div>
+                <h3>Burnout from Rejection</h3>
+                <p>Nothing kills momentum faster than spending hours on proposals that never get a reply.</p>
+            </div>
+            <div class="problem-card">
+                <div class="icon">💰</div>
+                <h3>Leaving Money on the Table</h3>
+                <p>When you're spending all your time writing proposals, you're not doing the work that actually pays.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- === MECHANISM === -->
+    <section id="how">
+        <div class="section-label">How It Works</div>
+        <h2>The <span class="highlight">Propello Engine</span> — Built for Speed, Designed to Win</h2>
+        <p>Propello isn't a template pack. It's an AI that actually understands what the client is asking for and writes around THEIR specific needs.</p>
+
+        <div class="mechanism-steps">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <h3>Paste the Job</h3>
+                <p>Copy-paste the job description, client brief, or RFP. Propello reads it end-to-end.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <h3>AI Analyzes</h3>
+                <p>Our engine identifies the core problem, client pain points, desired outcomes, and decision criteria.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <h3>Proposal Generated</h3>
+                <p>Propello produces a structured proposal: Hook → Credibility → Solution → Pricing → CTA.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-num">4</div>
+                <h3>Review & Send</h3>
+                <p>Review in seconds, tweak if needed, and send. From job post inbox to submitted proposal in under 2 minutes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- === FEATURES === -->
+    <section id="features">
+        <div class="section-label">What You Get</div>
+        <h2>Everything You Need to <span class="highlight">Win More Clients</span></h2>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">🧠</div>
+                <h3>Smart Job Analysis</h3>
+                <p>Propello doesn't just read keywords — it understands the client's real needs. It analyzes tone, urgency, budget signals, and hidden requirements.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">✍️</div>
+                <h3>5 Proven Frameworks</h3>
+                <p>Choose from 5 battle-tested proposal frameworks: Upwork, Cold Email, Agency Pitch, Hourly Retainer, and Partnership. Each optimized for its channel.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🎨</div>
+                <h3>Auto-Tailored to You</h3>
+                <p>Set your profile once — skills, experience, portfolio links, rates. Every proposal is automatically personalized with your best work.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📊</div>
+                <h3>Win Rate Analytics</h3>
+                <p>Track which frameworks and approaches convert best. Propello learns what works for your niche and optimizes accordingly.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚡</div>
+                <h3>30-Second Generation</h3>
+                <p>From paste to polished proposal in under 30 seconds. Send 10 proposals in the time it used to take for one.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📋</div>
+                <h3>5 Bonus Templates</h3>
+                <p>Includes 5 premium proposal templates you can customize and reuse: Upwork Premium, Cold Outreach, Agency Pitch, Hourly vs. Fixed, and Partnership Proposal.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- === PROOF === -->
+    <section id="proof">
+        <div class="section-label">Real Results</div>
+        <h2>Freelancers Are <span class="highlight">Winning More</span> With Propello</h2>
+
+        <div class="proof-grid">
+            <div class="testimonial">
+                <div class="quote">"I used to spend 2 hours every morning writing proposals. Now I spend 10 minutes. My win rate actually went up — better proposals, not faster ones."</div>
+                <div class="author">— Alex M. <span>Freelance Web Developer</span></div>
+            </div>
+            <div class="testimonial">
+                <div class="quote">"Propello caught details in client briefs I was completely missing. My proposals went from 'sounds good' to 'this person actually read my post.' Game changer."</div>
+                <div class="author">— Sarah K. <span>UX Designer</span></div>
+            </div>
+            <div class="testimonial">
+                <div class="quote">"I sent 42 proposals in my first week and landed 3 clients. Before Propello, I was lucky to get 1 response from 20 proposals."</div>
+                <div class="author">— Marcus J. <span>Copywriter</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === OBJECTIONS === -->
+    <section>
+        <div class="section-label">Still Thinking?</div>
+        <h2>We've Heard <span class="highlight">Every Objection</span></h2>
+
+        <div class="objections">
+            <div class="objection-item">
+                <h4>"I don't have time to learn a new tool"</h4>
+                <p>Takes 2 minutes to set up. Paste a job, get a proposal. That's it. No training, no onboarding video, no learning curve.</p>
+            </div>
+            <div class="objection-item">
+                <h4>"I've bought proposal tools before"</h4>
+                <p>Most "proposal tools" are fancy templates or PDF generators. Propello actually reads the client's request and writes tailored copy — not fill-in-the-blank.</p>
+            </div>
+            <div class="objection-item">
+                <h4>"AI proposals sound robotic"</h4>
+                <p>Propello is trained on thousands of winning proposals. The output sounds like you — not a robot. You can tweak in seconds, but most users send it as-is.</p>
+            </div>
+            <div class="objection-item">
+                <h4>"I don't finish things"</h4>
+                <p>Good news — there's nothing to finish. Type → Review → Send. The whole loop takes 2 minutes. Even the most undisiplined freelancer can do that.</p>
+            </div>
+            <div class="objection-item">
+                <h4>"What if I'm not technical?"</h4>
+                <p>Propello is a web app. If you can copy-paste and click a button, you can use it. No setup, no API keys, no command line.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- === GUARANTEE === -->
+    <section style="text-align:center;">
+        <h2>Built for <span class="highlight">Freelancers Who Win</span></h2>
+        <p style="margin: 0 auto;">Stop losing hours to proposals that don't convert. Propello pays for itself the first time you land a client you would have otherwise missed.</p>
+    </section>
+
+    <!-- === CTA === -->
+    <section class="cta-section" id="cta">
+        <h2>Ready to <span class="highlight">Win More Clients</span> in Half the Time?</h2>
+        <p>Join hundreds of freelancers using Propello to land better clients, faster.</p>
+
+        <form class="waitlist-form" action="#" method="POST" onsubmit="alert('Coming soon! Propello will be available shortly. Join the waitlist to get early access.'); return false;">
+            <input type="email" placeholder="Enter your email for early access" required>
+            <button type="submit">Get Early Access →</button>
+        </form>
+
+        <div class="hero-trust" style="justify-content:center; margin-top: 32px;">
+            <span>🔒 No spam. Unsubscribe anytime.</span>
+        </div>
+    </section>
+
+    <!-- === FOOTER === -->
+    <footer>
+        <p>&copy; 2026 Propello. Built for freelancers who win.</p>
+    </footer>
+
+</body>
+</html>
