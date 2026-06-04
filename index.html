@@ -6,118 +6,119 @@
   <title>Propello — AI Proposal Builder for Freelancers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'DM Sans', system-ui, sans-serif; background: #000; color: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
 
-    /* Top cyan gradient glow */
-    .hero-glow { position: absolute; top: 0; left: 0; right: 0; height: 80vh; background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(6,182,212,.08), transparent); pointer-events: none; z-index: 0; }
-
-    .container { max-width: 1120px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
-
-    /* NAV */
-    nav { padding: 20px 0; position: relative; z-index: 10; }
-    .nav-inner { max-width: 1120px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+    /* NAV - #0F1728 bg */
+    nav { width: 100%; padding: 16px 0; background: #0F1728; border-bottom: 1px solid #1E2A3B; position: relative; z-index: 10; }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
     .logo-mark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .logo-icon { background: linear-gradient(135deg,#6C63FF,#3B82F6); color: #fff; font-weight: 900; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
     .logo-text { display: flex; flex-direction: column; }
     .logo-top { font-size: 0.95rem; font-weight: 700; color: #fff; letter-spacing: 0.03em; line-height: 1.1; }
     .logo-bottom { font-size: 0.65rem; font-weight: 600; color: #FF7300; letter-spacing: 0.06em; text-transform: uppercase; }
-    .nav-cta { background: #FF7300; color: #000; font-weight: 700; font-size: 0.85rem; padding: 10px 24px; border-radius: 8px; text-decoration: none; transition: opacity 0.2s; }
-    .nav-cta:hover { opacity: 0.9; }
+    .nav-cta { display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.75rem; padding: 8px 24px; border-radius: 12px; height: 36px; text-decoration: none; background: linear-gradient(135deg,#06b6d4,#0891b2); color: #0F1728; box-shadow: 0 2px 8px rgba(6,182,212,0.3); transition: all 0.3s; }
+    .nav-cta:hover { box-shadow: 0 4px 16px rgba(6,182,212,0.4); transform: translateY(-2px); }
 
-    /* HERO */
-    .hero { padding: 80px 0 60px; text-align: center; position: relative; overflow: hidden; }
-    .eyebrow { display: inline-block; background: rgba(255,115,0,0.12); color: #FF7300; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px; border-radius: 100px; margin-bottom: 24px; border: 1px solid rgba(255,115,0,0.2); }
-    .hero h1 { font-size: 3.5rem; font-weight: 700; line-height: 1.1; color: #fff; margin-bottom: 20px; letter-spacing: -0.025em; }
-    .hero h1 span { background: linear-gradient(135deg,#FF7300,#FF9A0D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .hero p { font-size: 1.15rem; color: #939482; max-width: 640px; margin: 0 auto 32px; line-height: 1.7; }
-    .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: #FF7300; color: #000; font-size: 1rem; font-weight: 700; padding: 14px 36px; border-radius: 8px; text-decoration: none; transition: opacity 0.2s; }
-    .hero-cta:hover { opacity: 0.9; }
-    .hero-sub { margin-top: 12px; font-size: 0.85rem; color: #666; }
+    /* HEADER with BG image simulation */
+    .header-section { background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800"><rect fill="%23000" width="1440" height="800"/><circle cx="200" cy="150" r="400" fill="rgba(6,182,212,0.06)" /><circle cx="1200" cy="200" r="350" fill="rgba(6,182,212,0.04)" /><circle cx="720" cy="100" r="300" fill="rgba(255,115,0,0.03)" /></svg>'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; }
+    .header-section .content { padding: 96px 0; text-align: center; max-width: 900px; margin: 0 auto; }
 
-    /* SECTIONS */
-    section { padding: 80px 0; }
-    section + section { border-top: 1px solid rgba(255,255,255,0.06); }
-    .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #FF7300; margin-bottom: 16px; }
-    h2 { font-size: 2.2rem; font-weight: 700; color: #fff; margin-bottom: 20px; line-height: 1.2; letter-spacing: -0.025em; }
-    h3 { font-size: 1.2rem; font-weight: 600; color: #fff; margin: 0 0 8px; }
-    .body-text { font-size: 1rem; color: #939482; line-height: 1.7; margin-bottom: 20px; max-width: 700px; }
-    .body-text strong { color: #fff; font-weight: 600; }
+    .header-section h1 { font-family: 'DM Sans', system-ui, sans-serif; font-size: 3.75rem; font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; color: #fff; margin-bottom: 32px; }
+    @media (min-width: 640px) { .header-section h1 { font-size: 6rem; } }
 
-    /* PROBLEM CARDS */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0; }
-    .card { background: #0F1728; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 28px; }
-    .card h4 { color: #fff; font-weight: 600; font-size: 1rem; margin-bottom: 8px; }
-    .card p { font-size: 0.9rem; color: #939482; line-height: 1.6; margin: 0; }
-    .card .icon { font-size: 1.4rem; margin-bottom: 12px; display: block; }
+    .header-section h1 .highlight { color: #FF9A0D; }
 
-    /* HIGHLIGHT */
-    .highlight { background: rgba(255,115,0,0.06); border-left: 3px solid #FF7300; padding: 20px 24px; border-radius: 0 8px 8px 0; margin: 24px 0; }
-    .highlight p { color: #E0DACE; font-size: 0.95rem; margin: 0; line-height: 1.7; }
+    .header-section p { margin-top: 24px; font-size: 1.25rem; line-height: 1.7; color: rgba(255,255,255,0.9); max-width: 768px; margin-left: auto; margin-right: auto; }
 
-    /* STEPS */
-    .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0; }
-    .step { background: #0F1728; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 28px; }
-    .step .num { color: #FF7300; font-weight: 700; font-size: 1.2rem; margin-bottom: 8px; }
-    .step h4 { color: #fff; font-weight: 600; margin-bottom: 8px; font-size: 1rem; }
-    .step p { font-size: 0.9rem; color: #939482; margin: 0; line-height: 1.6; }
+    .header-cta { display: inline-flex; align-items: center; justify-content: center; font-weight: 600; white-space: nowrap; background: linear-gradient(135deg,#06b6d4,#0891b2); color: #0F1728; font-size: 1.25rem; padding: 28px 48px; border-radius: 12px; height: 48px; text-decoration: none; box-shadow: 0 2px 8px rgba(6,182,212,0.3); transition: all 0.3s; margin-top: 48px; background: #FF7300; color: #fff; letter-spacing: 0.02em; }
+    .header-cta:hover { box-shadow: 0 4px 16px rgba(6,182,212,0.4); transform: translateY(-2px); }
 
-    /* TESTIMONIALS */
-    .testimonial { background: #0F1728; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 28px; margin: 16px 0; }
-    .testimonial .quote { font-size: 1rem; color: #E0DACE; font-style: italic; margin-bottom: 12px; line-height: 1.6; }
-    .testimonial .author { font-size: 0.85rem; color: #FF7300; font-weight: 600; }
-    .testimonial .detail { font-size: 0.75rem; color: #666; }
+    /* SECTIONS - alternating */
+    .section-taupe { background: #939482; padding: 96px 0; }
+    .section-beige { background: #E0DACE; padding: 96px 0; }
 
-    /* VISUALIZATION */
-    .visual { background: #0F1728; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 28px; margin: 16px 0; }
-    .visual p { font-size: 0.95rem; color: #E0DACE; margin: 0; line-height: 1.7; }
+    .section-taupe .section-label, .section-beige .section-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #FF7300; margin-bottom: 16px; text-align: center; }
+    .section-taupe h2, .section-beige h2 { font-family: 'DM Sans', system-ui, sans-serif; font-size: 1.875rem; font-weight: 600; letter-spacing: -0.025em; color: #000; margin-bottom: 24px; text-align: center; }
+    @media (min-width: 640px) { .section-taupe h2, .section-beige h2 { font-size: 2.25rem; } }
 
-    /* OBJECTIONS */
-    .objection { display: flex; gap: 16px; background: #0F1728; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px 24px; margin: 10px 0; align-items: flex-start; }
-    .objection .q { color: #FF7300; font-weight: 600; flex-shrink: 0; min-width: 160px; font-size: 0.95rem; }
-    .objection .a { font-size: 0.9rem; color: #939482; line-height: 1.6; }
+    .section-taupe h2.big, .section-beige h2.big { font-size: 1.875rem; font-weight: 700; letter-spacing: -0.02em; }
+    @media (min-width: 640px) { .section-taupe h2.big, .section-beige h2.big { font-size: 3rem; } }
 
-    /* OFFER */
-    .offer-box { background: linear-gradient(135deg,#0F1728,#1E2A3B); border: 1px solid rgba(255,115,0,0.2); border-radius: 16px; padding: 48px; text-align: center; margin: 32px 0; }
-    .offer-box .price { font-size: 3rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
-    .offer-box .price span { font-size: 1rem; font-weight: 400; color: #666; }
-    .offer-box ul { list-style: none; padding: 0; margin: 24px 0; text-align: left; display: inline-block; }
-    .offer-box ul li { padding: 10px 0; color: #939482; font-size: 0.95rem; }
-    .offer-box ul li:before { content: "✓ "; color: #FF7300; font-weight: 700; }
-    .offer-cta { display: inline-flex; align-items: center; gap: 8px; background: #FF7300; color: #000; font-size: 1.1rem; font-weight: 700; padding: 16px 44px; border-radius: 8px; text-decoration: none; margin-top: 8px; transition: opacity 0.2s; }
-    .offer-cta:hover { opacity: 0.9; }
-    .guarantee { margin-top: 16px; font-size: 0.85rem; color: #666; }
-    .guarantee strong { color: #FF7300; }
+    .section-taupe .subtitle, .section-beige .subtitle { font-size: 1.125rem; line-height: 2rem; color: #000; text-align: center; margin-bottom: 64px; }
+    .section-taupe p, .section-beige p { color: #000; font-size: 1rem; line-height: 1.6; }
+    .section-taupe p.text-white-text, .section-beige p.text-white-text { color: #000; }
 
-    /* URGENCY */
-    .urgency { background: rgba(255,115,0,0.06); border: 1px solid rgba(255,115,0,0.15); border-radius: 12px; padding: 20px; text-align: center; margin: 24px 0; }
-    .urgency p { color: #FF7300; font-weight: 600; font-size: 0.9rem; margin: 0; }
+    /* CARDS */
+    .tool-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1280px; margin: 0 auto; }
+    @media (min-width: 640px) { .tool-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .tool-grid { grid-template-columns: 1fr 1fr 1fr 1fr; } }
 
-    /* FINAL CTA SECTION */
-    .final-cta { text-align: center; padding: 100px 0; }
-    .final-cta h2 { max-width: 600px; margin: 0 auto 16px; }
-    .final-cta p { color: #939482; max-width: 540px; margin: 0 auto 32px; font-size: 1rem; line-height: 1.7; }
+    .tool-card { background: #E0DACE; background-image: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); border: 0; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); padding: 8px 32px 0; overflow: visible; text-align: center; }
+
+    .benefit-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
+    @media (min-width: 768px) { .benefit-grid { grid-template-columns: 1fr 1fr; } }
+
+    /* STEPS GRID */
+    .steps-grid { display: grid; grid-template-columns: 1fr; gap: 32px; max-width: 1024px; margin: 0 auto; }
+    @media (min-width: 768px) { .steps-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .step-card { background: #E0DACE; background-image: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); border: 0; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); padding: 24px; }
+    .step-card .icon-box { width: 48px; height: 48px; background: #FF7300; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .step-card .icon-box svg { width: 24px; height: 24px; color: #fff; }
+    .step-card h3 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; color: #000; margin-bottom: 8px; }
+    .step-card p { font-size: 1rem; color: #000; line-height: 1.6; }
+
+    /* CHECKLIST */
+    .checklist { display: flex; flex-direction: column; gap: 16px; }
+    .check-item { display: flex; align-items: center; gap: 12px; }
+    .check-item svg { width: 24px; height: 24px; color: #FF7300; flex-shrink: 0; }
+    .check-item p { font-size: 1.125rem; color: #000; margin: 0; }
+
+    /* COLOR CHECK ICONS IN SECTIONS */
+    .check-green svg { color: #FF7300; }
 
     /* FOOTER */
-    footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
-    footer p { font-size: 0.8rem; color: #444; }
+    footer { background: #0F1728; padding: 48px 0; }
+    footer p { font-size: 0.875rem; color: #9ca3af; text-align: center; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
 
-    @media (max-width: 768px) {
-      .hero h1 { font-size: 2.2rem; }
-      h2 { font-size: 1.6rem; }
-      .grid-2, .steps { grid-template-columns: 1fr; }
-      .container { padding: 0 20px; }
-      .nav-inner { padding: 0 20px; }
-      .objection { flex-direction: column; gap: 8px; }
-      .objection .q { min-width: auto; }
-    }
+    /* MISC */
+    .text-center { text-align: center; }
+    .mb-16 { margin-bottom: 64px; }
+    .mb-12 { margin-bottom: 48px; }
+    .mt-10 { margin-top: 40px; }
+    .mt-16 { margin-top: 64px; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .max-w-5xl { max-width: 1024px; }
+    .max-w-7xl { max-width: 1280px; }
+    .max-w-3xl { max-width: 768px; }
+    .w-full { width: 100%; }
+
+    /* BUTTON STACK */
+    .btn-stack { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 48px; }
+    .btn-primary { display: inline-flex; align-items: center; justify-content: center; font-weight: 600; background: #FF7300; color: #fff; font-size: 1.25rem; padding: 28px 48px; border-radius: 12px; height: 48px; text-decoration: none; letter-spacing: 0.02em; transition: all 0.2s; }
+    .btn-primary:hover { background: #FF8C33; transform: translateY(-2px); }
+
+    /* PRICING */
+    .pricing-card { max-width: 384px; margin: 0 auto; background: #939482; background-image: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); border: 0; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+    .pricing-card h3 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; color: #000; }
+    .pricing-card .price { font-size: 2.25rem; font-weight: 600; color: #000; }
+    .pricing-card .price-sub { font-size: 0.875rem; color: rgba(0,0,0,0.75); }
+    .pricing-card ul { margin-top: 16px; list-style: none; }
+    .pricing-card ul li { display: flex; align-items: center; gap: 8px; color: #000; font-size: 0.875rem; padding: 4px 0; }
+    .pricing-card ul li svg { width: 20px; height: 20px; color: #FF7300; flex-shrink: 0; }
+
+    /* TABS */
+    .tab-group { display: inline-flex; height: 40px; align-items: center; justify-content: center; padding: 4px; border-radius: 8px; background: #939482; border: 0; }
+    .tab { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; border-radius: 4px; padding: 6px 12px; font-size: 0.875rem; font-weight: 500; border: none; background: transparent; color: #000; cursor: pointer; transition: all 0.2s; }
+    .tab.active { background: #FF7300; color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
-
-<div class="hero-glow"></div>
 
 <!-- NAV -->
 <nav>
@@ -129,280 +130,195 @@
         <span class="logo-bottom">AI PROPOSAL BUILDER</span>
       </div>
     </a>
-    <a href="#" class="nav-cta">Get Started</a>
+    <a href="#" class="nav-cta">GET STARTED</a>
   </div>
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div class="container">
-    <div class="eyebrow">For Freelancers Who Want to Win More</div>
-    <h1>Win More Clients<br>in <span>Half the Time</span></h1>
+<div class="header-section">
+  <div class="content container">
+    <h1>Win More Clients<br>in <span class="highlight">Half the Time</span></h1>
     <p>Paste a job description and get a tailored, high-converting proposal in 30 seconds. Propello's AI analyzes exactly what the client wants and writes your proposal around their specific needs.</p>
-    <a href="#" class="hero-cta">Get Propello — $37</a>
-    <p class="hero-sub">One-time payment. Instant access. No subscription.</p>
+    <a href="#" class="header-cta">GET PROPELLO</a>
   </div>
 </div>
 
-<!-- PROBLEM -->
-<section>
+<!-- TOOLS SECTION (#939482) -->
+<div class="section-taupe">
   <div class="container">
-    <div class="section-label">The Problem</div>
-    <h2>You're Spending Hours on Proposals That Never Get Read</h2>
-    <p class="body-text">You sit down, read the job description, start writing, delete, rewrite, second-guess. Thirty minutes later you send a generic proposal. Crickets.</p>
-    <div class="grid-2">
-      <div class="card">
-        <span class="icon">⏰</span>
-        <h4>Time Drain</h4>
-        <p>Every proposal costs 20–40 minutes. Hours per week. Days per month you'll never get back.</p>
-      </div>
-      <div class="card">
-        <span class="icon">📉</span>
-        <h4>Low Win Rate</h4>
-        <p>Generic proposals get ignored. Customization works — but who has time to customize every single one?</p>
-      </div>
-      <div class="card">
-        <span class="icon">🧠</span>
-        <h4>Writer's Block</h4>
-        <p>Blank page syndrome. Every. Single. Time. You know what to say but getting it down feels impossible.</p>
-      </div>
-      <div class="card">
-        <span class="icon">💰</span>
-        <h4>Income Cap</h4>
-        <p>You can only send so many proposals in a day. Your income is literally capped by your typing speed.</p>
-      </div>
+    <div class="text-center mb-16">
+      <div class="section-label">8 Tools</div>
+      <h2 class="big">8 Powerful AI Tools To Supercharge Your Freelance Growth</h2>
+      <p class="subtitle">Everything you need to win more clients and grow your freelance business.</p>
     </div>
-    <p class="body-text" style="text-align:center;">This isn't a discipline problem. It's a <strong>tool problem.</strong></p>
-  </div>
-</section>
 
-<!-- BEFORE/AFTER -->
-<section>
-  <div class="container">
-    <div class="section-label">Before → After</div>
-    <h2>What Changes When You Use Propello</h2>
-    <p class="body-text"><strong>Before:</strong> Open Upwork. Read the post. Spend 35 minutes writing a proposal. Cross your fingers. Repeat.</p>
-    <div class="highlight">
-      <p>"Every proposal was a gamble. Some weeks I'd send 15 and hear back from 2. The math never worked."</p>
-    </div>
-    <p class="body-text"><strong>After:</strong> Open a job post. Hit generate. Review the tailored proposal. Add one personal note if you want. Hit send. <strong style="color:#FF7300;">5 minutes total.</strong></p>
-    <div class="highlight">
-      <p>"I sent 8 proposals in 45 minutes. Heard back from 6. Closed 3 clients in one afternoon. That never happened before."</p>
+    <div class="tool-grid">
+      <div class="tool-card"><h3 style="font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:#000;margin-top:24px;margin-bottom:8px;">Smart Analysis</h3><p style="color:#000;font-size:1rem;line-height:1.6;margin-bottom:16px;">Reads any job description and extracts exactly what the client wants.</p></div>
+      <div class="tool-card"><h3 style="font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:#000;margin-top:24px;margin-bottom:8px;">5 Frameworks</h3><p style="color:#000;font-size:1rem;line-height:1.6;margin-bottom:16px;">Problem-Solution, Before-After, Credibility, Direct Pitch, Case Study.</p></div>
+      <div class="tool-card"><h3 style="font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:#000;margin-top:24px;margin-bottom:8px;">Auto-Tailored</h3><p style="color:#000;font-size:1rem;line-height:1.6;margin-bottom:16px;">Every proposal is written for that specific job. No templates.</p></div>
+      <div class="tool-card"><h3 style="font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:#000;margin-top:24px;margin-bottom:8px;">Win Analytics</h3><p style="color:#000;font-size:1rem;line-height:1.6;margin-bottom:16px;">Track which frameworks convert and optimize with data.</p></div>
+      <div class="tool-card"><h3 style="font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:#000;margin-top:24px;margin-bottom:8px;">Speed Mode</h3><p style="color:#000;font-size:1rem;line-height:1.6;margin-bottom:16px;">Send 5+ tailored proposals in under 30 minutes.</p></div>
+      <div class="tool-card"><h3 style="font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:#000;margin-top:24px;margin-bottom:8px;">Template Library</h3><p style="color:#000;font-size:1rem;line-height:1.6;margin-bottom:16px;">Upwork, Cold Email, Agency, Retainer, Partnership formats.</p></div>
+      <div class="tool-card"><h3 style="font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:#000;margin-top:24px;margin-bottom:8px;">AI Content Coach</h3><p style="color:#000;font-size:1rem;line-height:1.6;margin-bottom:16px;">Knows your entire proposal history and tells you what to improve.</p></div>
+      <div class="tool-card"><h3 style="font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:#000;margin-top:24px;margin-bottom:8px;">Inspiration</h3><p style="color:#000;font-size:1rem;line-height:1.6;margin-bottom:16px;">Save winning proposals and instantly repurpose for new jobs.</p></div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- MECHANISM -->
-<section>
+<!-- BENEFIT 1 (#E0DACE) -->
+<div class="section-beige">
   <div class="container">
-    <div class="section-label">How It Works</div>
-    <h2>The Mechanism Behind Propello</h2>
-    <p class="body-text">Propello isn't a template pack. It's an AI that <strong>reads the job description</strong> and <strong>generates a tailored proposal</strong> using proven persuasion frameworks.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="num">01</div>
-        <h4>Paste the Job Post</h4>
-        <p>Copy the URL or text of any freelance job — Upwork, Fiverr, LinkedIn, cold email.</p>
+    <div class="benefit-grid">
+      <div>
+        <h2 class="big" style="text-align:left;margin-bottom:48px;">Create Content The X Algorithm Loves</h2>
+        <div class="checklist">
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Paste any job post and get a tailored proposal instantly</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Choose from 5 frameworks optimized for different client types</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Get instant feedback on how to improve your proposals</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Understand why past proposals didn't land</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Get alternate versions that will SLAP</p></div>
+        </div>
       </div>
-      <div class="step">
-        <div class="num">02</div>
-        <h4>AI Analyzes the Brief</h4>
-        <p>Propello extracts the core ask, pain points, required skills, and client tone.</p>
-      </div>
-      <div class="step">
-        <div class="num">03</div>
-        <h4>Select a Framework</h4>
-        <p>Choose from 5 proven structures: Problem-Solution, Before-After, Credibility, Direct Pitch, or Speed Case Study.</p>
-      </div>
-      <div class="step">
-        <div class="num">04</div>
-        <h4>Review + Send</h4>
-        <p>A fully written proposal appears. Tailored to the specific job. Read it, tweak, and hit send.</p>
-      </div>
+      <div style="background:rgba(0,0,0,0.05);border-radius:12px;height:400px;display:flex;align-items:center;justify-content:center;"><p style="color:#000;font-size:1rem;">[Proposal Preview]</p></div>
     </div>
-    <p class="body-text" style="text-align:center;"><strong>30 seconds of work.</strong> A proposal that reads like you spent an hour on it.</p>
   </div>
-</section>
+</div>
 
-<!-- FEATURES -->
-<section>
+<!-- BENEFIT 2 (#E0DACE) -->
+<div class="section-beige" style="padding-top:0;">
   <div class="container">
-    <div class="section-label">What You Get</div>
-    <h2>Everything Included with Propello</h2>
-    <div class="grid-2">
-      <div class="card">
-        <span class="icon">🎯</span>
-        <h4>Smart Analysis Engine</h4>
-        <p>Reads any job description and extracts what matters — skills, tone, budget, timeline, client psychology.</p>
+    <div class="benefit-grid">
+      <div>
+        <h2 class="big" style="text-align:left;margin-bottom:48px;">The Only AI That Is Trained On ALL Your Proposals</h2>
+        <div class="checklist">
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>An AI that knows your entire proposal history</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Knows which hooks and frameworks win most</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Never run out of ways to pitch yourself again</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Understand which days and markets have best response</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Create AI proposals that are tailored to your voice</p></div>
+        </div>
       </div>
-      <div class="card">
-        <span class="icon">📋</span>
-        <h4>5 Proposal Frameworks</h4>
-        <p>Problem-Solution, Before-After-Bridge, Credibility First, Direct & Confident, Speed Case Study.</p>
+      <div style="background:rgba(0,0,0,0.05);border-radius:12px;height:400px;display:flex;align-items:center;justify-content:center;"><p style="color:#000;font-size:1rem;">[AI Dashboard]</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- BENEFIT 3 (#E0DACE) -->
+<div class="section-beige" style="padding-top:0;">
+  <div class="container">
+    <div class="benefit-grid">
+      <div>
+        <h2 class="big" style="text-align:left;margin-bottom:48px;">Win The Proposal Game And Be The Ultimate Freelancer</h2>
+        <div class="checklist">
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Reply to job posts faster than anyone else</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Grow your client list through strategic proposals</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Build relationships with top clients</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Find high-value opportunities in key markets</p></div>
+          <div class="check-item"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p>Track all your proposal metrics and dominate competitors</p></div>
+        </div>
       </div>
-      <div class="card">
-        <span class="icon">⚡</span>
-        <h4>Auto-Tailored Output</h4>
-        <p>Every proposal is written specifically for that job. No templates. No fill-in-the-blanks.</p>
+      <div style="background:rgba(0,0,0,0.05);border-radius:12px;height:400px;display:flex;align-items:center;justify-content:center;"><p style="color:#000;font-size:1rem;">[Proposal Dashboard]</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS (#939482) -->
+<div class="section-taupe">
+  <div class="container">
+    <div class="text-center mb-16">
+      <div class="section-label">How It Works</div>
+      <h2 class="big">How Propello Works</h2>
+      <p class="subtitle">How the custom built proposal AI works</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+        </div>
+        <h3>Create Incredible Proposals</h3>
+        <p>Use AI to create winning proposals that are designed to convert.</p>
       </div>
-      <div class="card">
-        <span class="icon">📊</span>
-        <h4>Win Rate Analytics</h4>
-        <p>Track which frameworks convert best. Optimize your approach with real data.</p>
+      <div class="step-card">
+        <div class="icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
+        </div>
+        <h3>Analyze With AI</h3>
+        <p>Reads every job description and extracts what matters for your pitch.</p>
       </div>
-      <div class="card">
-        <span class="icon">🚀</span>
-        <h4>Speed Mode</h4>
-        <p>Send 5+ tailored proposals in under 30 minutes. Go from applying to closing in one afternoon.</p>
-      </div>
-      <div class="card">
-        <span class="icon">📚</span>
-        <h4>Template Library</h4>
-        <p>5 additional formats: Upwork, Cold Email, Agency Pitch, Hourly Retainer, Partnership proposals.</p>
+      <div class="step-card">
+        <div class="icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" x2="12" y1="2" y2="15"></line></svg>
+        </div>
+        <h3>Send To Win Clients</h3>
+        <p>Send tailored proposals fast and dominate your competition.</p>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- PROOF -->
-<section>
+<!-- PRICING (#E0DACE) -->
+<div class="section-beige" id="pricing">
   <div class="container">
-    <div class="section-label">Proof</div>
-    <h2>Freelancers Are Winning More with Propello</h2>
-    <div class="testimonial">
-      <p class="quote">"I sent 8 proposals in 45 minutes on a Tuesday. By Friday I had 3 new clients. That's $4,200 in work from one session. Propello paid for itself 100 times over in the first week."</p>
-      <p class="author">— Marcus T.</p>
-      <p class="detail">Freelance Web Developer • Upwork</p>
+    <h2 class="big" style="text-align:center;margin-bottom:24px;">Simple Pricing</h2>
+    <div style="display:flex;justify-content:center;margin-bottom:32px;">
+      <div class="tab-group">
+        <button class="tab active">Monthly</button>
+        <button class="tab">Annual (Save $89)</button>
+      </div>
     </div>
-    <div class="testimonial">
-      <p class="quote">"I was spending almost 3 hours a day writing proposals. Now it's 20 minutes. My win rate actually went up because the proposals are better than what I was writing myself."</p>
-      <p class="author">— Sarah K.</p>
-      <p class="detail">Copywriter • Fiverr Pro</p>
-    </div>
-    <div class="testimonial">
-      <p class="quote">"The Before-After-Bridge framework alone is worth the price. I used to write the same boring intro every time. Now every proposal grabs attention."</p>
-      <p class="author">— David R.</p>
-      <p class="detail">UI/UX Designer • LinkedIn</p>
+    <div class="pricing-card">
+      <div style="padding:24px 24px 0;">
+        <h3 style="margin-bottom:4px;">Propello</h3>
+        <p style="font-size:0.875rem;color:rgba(0,0,0,0.75);margin-bottom:16px;">Everything you need to win more clients</p>
+        <p style="font-size:2.25rem;font-weight:600;color:#000;">$37</p>
+        <p style="font-size:0.875rem;color:rgba(0,0,0,0.75);">one-time</p>
+        <ul>
+          <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>AI Smart Analysis</li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>5 Proposal Frameworks</li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>Auto-Tailored Proposals</li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>Win Rate Analytics</li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>AI Content Coach</li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>Template Library</li>
+          <li><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>Lifetime Access + Updates</li>
+        </ul>
+      </div>
+      <div style="padding:24px;display:flex;flex-direction:column;gap:12px;align-items:center;">
+        <a href="#" class="btn-primary" style="width:100%;text-align:center;height:auto;font-size:1.125rem;">Get Propello — $37</a>
+        <p style="font-size:0.75rem;color:rgba(0,0,0,0.6);">🔒 7-Day Money-Back Guarantee</p>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- FUTURE VISUALIZATION -->
-<section>
+<!-- FINAL CTA (#939482) -->
+<div class="section-taupe" style="text-align:center;">
   <div class="container">
-    <div class="section-label">Imagine This</div>
-    <h2>Picture Your Day with Propello</h2>
-    <div class="visual">
-      <p>It's 9 AM. You find 3 promising job posts. Paste each link into Propello, review the generated proposals, add a personal touch, and hit send. <strong style="color:#fff;">You're done by 9:18 AM.</strong></p>
-    </div>
-    <div class="visual">
-      <p>By 2 PM, you have two responses. One wants a call. The other says "when can you start?" You book both for tomorrow. <strong style="color:#fff;">You spend the rest of the day doing actual client work — not writing proposals.</strong></p>
+    <h2 class="big">Ready to Transform Your Freelance Career?</h2>
+    <p class="subtitle" style="margin-bottom:0;">Join thousands of freelancers using Propello to win more clients, faster.</p>
+    <div class="btn-stack">
+      <a href="#" class="btn-primary">GET PROPELLO</a>
     </div>
   </div>
-</section>
+</div>
 
-<!-- OBJECTIONS -->
-<section>
-  <div class="container">
-    <div class="section-label">Objections</div>
-    <h2>Things You Might Be Thinking</h2>
-    <div class="objection">
-      <div class="q">"I'm not technical."</div>
-      <div class="a">You don't need to be. Paste a link, click generate, review, send. Four steps, zero learning curve.</div>
-    </div>
-    <div class="objection">
-      <div class="q">"AI proposals sound generic."</div>
-      <div class="a">That's the problem with every other tool. Propello reads the specific job post and writes to it. Not a template. Yours.</div>
-    </div>
-    <div class="objection">
-      <div class="q">"I've bought tools like this."</div>
-      <div class="a">Most are template packs. Propello generates a custom proposal from scratch for every single job. Different category entirely.</div>
-    </div>
-    <div class="objection">
-      <div class="q">"I don't send many proposals."</div>
-      <div class="a">Then every one matters more. Make the ones you do send count with a tailored pitch that stands out.</div>
-    </div>
-    <div class="objection">
-      <div class="q">"Will clients know I used AI?"</div>
-      <div class="a">Only if you don't review it. You read and approve every one. Add a personal line. The AI handles structure — you bring the personality.</div>
-    </div>
-    <div class="objection">
-      <div class="q">"Does it work for my niche?"</div>
-      <div class="a">Yes. It adapts to every category — dev, design, writing, marketing, consulting, video, admin. The language of your field.</div>
-    </div>
-    <div class="objection">
-      <div class="q">"I already have a system."</div>
-      <div class="a">If you're getting 30%+ response rates in under 10 minutes per proposal, keep it. If not — this is faster and better.</div>
-    </div>
-    <div class="objection">
-      <div class="q">"What if it doesn't work?"</div>
-      <div class="a">7-day full refund, no questions. Send 5 proposals with Propello. If you don't see better results, get your money back.</div>
-    </div>
-  </div>
-</section>
-
-<!-- DIFFERENTIATION -->
-<section>
-  <div class="container">
-    <div class="section-label">Why Propello</div>
-    <h2>This Is Not Another AI Product</h2>
-    <p class="body-text"><strong>Propello is not:</strong> A ChatGPT prompt pack. A fill-in-the-blank template library. A "just add your name" proposal generator.</p>
-    <p class="body-text"><strong>Propello is:</strong> An AI that reads each job description from scratch, extracts what matters, and writes a tailored proposal using professional persuasion frameworks. No two proposals are the same because no two jobs are the same.</p>
-    <div class="highlight">
-      <p>"Other tools help you write faster. Propello helps you win more. Those are not the same thing."</p>
-    </div>
-  </div>
-</section>
-
-<!-- OFFER -->
-<section>
-  <div class="container">
-    <div class="section-label">The Offer</div>
-    <h2>Get Propello for a One-Time Price</h2>
-    <div class="offer-box">
-      <div class="price">$37 <span>one-time</span></div>
-      <ul>
-        <li>Smart Analysis Engine — reads any job post</li>
-        <li>5 Persuasion Frameworks — pick the right one</li>
-        <li>Auto-Tailored Proposals — unique every time</li>
-        <li>Win Rate Analytics — track what works</li>
-        <li>5 Additional Templates — Upwork, Cold Email, Agency, Retainer, Partnership</li>
-        <li>Speed Mode — 5 proposals in 30 minutes</li>
-        <li>Lifetime access + all future updates</li>
-      </ul>
-      <a href="#" class="offer-cta">Get Propello — $37</a>
-    </div>
-    <div class="guarantee" style="text-align:center;">
-      <strong>🔒 7-Day Money-Back Guarantee</strong> — If Propello doesn't help you win more clients, get a full refund. No forms. No hoops.
-    </div>
-  </div>
-</section>
-
-<!-- URGENCY -->
-<section style="padding:40px 0;">
-  <div class="container">
-    <div class="urgency">
-      <p>⚠️ Early Adopter Pricing — $37 is the launch price. It increases as more freelancers join.</p>
-    </div>
-  </div>
-</section>
-
-<!-- FINAL CTA -->
-<section class="final-cta">
-  <div class="container">
-    <h2>You're One Decision Away</h2>
-    <p>Keep spending 30 minutes on every proposal hoping the next one sticks — or use Propello to send 5 tailored proposals in the same time and let the math work in your favor.</p>
-    <p style="color:#E0DACE;margin-bottom:32px;"><strong style="color:#fff;">$37.</strong> One time. Less than one client is worth. And if it doesn't work, you get it back.</p>
-    <a href="#" class="offer-cta">Get Propello Now →</a>
-    <div class="guarantee" style="margin-top:12px;">
-      <strong>🔒 7-Day Guarantee</strong> • Instant Access • No Subscription
-    </div>
-  </div>
-</section>
-
+<!-- FOOTER -->
 <footer>
-  <div class="container">
-    <p>© 2026 Propello — AI Proposal Builder for Freelancers</p>
+  <div class="footer-inner">
+    <div style="display:grid;grid-template-columns:1fr;gap:32px;margin-bottom:48px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="background:linear-gradient(135deg,#6C63FF,#3B82F6);color:#fff;font-weight:900;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">P</div>
+          <div>
+            <div style="font-size:0.95rem;font-weight:700;color:#fff;">PROPELLO</div>
+            <div style="font-size:0.65rem;font-weight:600;color:#FF7300;letter-spacing:0.06em;text-transform:uppercase;">AI PROPOSAL BUILDER</div>
+          </div>
+        </div>
+        <p style="color:#9ca3af;font-size:0.875rem;text-align:left;">AI-powered tools to help freelancers win more clients, faster.</p>
+      </div>
+    </div>
+    <div style="border-top:1px solid #1f2937;padding-top:32px;">
+      <p>© 2026 Propello. All rights reserved.</p>
+    </div>
   </div>
 </footer>
 
