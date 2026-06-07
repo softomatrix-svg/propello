@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propello — Client Research Worksheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #000; color: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+    nav { width: 100%; padding: 16px 0; background: rgba(15,23,40,0.95); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+    .logo-mark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { background: linear-gradient(135deg,#6C63FF,#3B82F6); color: #fff; font-weight: 900; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-top { font-size: 0.95rem; font-weight: 700; color: #fff; line-height: 1.1; }
+    .logo-bottom { font-size: 0.65rem; font-weight: 600; color: #FF7300; letter-spacing: 0.06em; text-transform: uppercase; }
+    .page-header { background: linear-gradient(135deg, #1a2744 0%, #0F1728 40%, #06b6d4 100%); padding: 64px 0; text-align: center; }
+    .page-header h1 { font-size: 2.5rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .page-header p { font-size: 1.1rem; color: rgba(255,255,255,0.8); max-width: 550px; margin: 0 auto; }
+    .page-content { background: #0F1728; padding: 48px 0; }
+
+    .worksheet-card { background: #1a2744; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px; }
+
+    .section-block { margin-bottom: 36px; }
+    .section-block:last-child { margin-bottom: 0; }
+    .section-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .section-title { font-size: 1.2rem; font-weight: 700; color: #FF7300; margin-bottom: 4px; }
+    .section-desc { font-size: 0.85rem; color: #9ca3af; margin-bottom: 16px; }
+
+    .field-group { margin-bottom: 14px; }
+    .field-group label { display: block; font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .field-group .hint { font-size: 0.8rem; color: #9ca3af; margin-bottom: 6px; }
+    .field-group textarea, .field-group input { width: 100%; padding: 12px 14px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; line-height: 1.5; resize: vertical; transition: border-color 0.2s; }
+    .field-group textarea:focus, .field-group input:focus { outline: none; border-color: #FF7300; }
+    .field-group textarea { min-height: 70px; }
+
+    .btn-export { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #FF7300; color: #fff; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-export:hover { background: #FF8C33; }
+    .btn-export.secondary { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); }
+    .btn-export.secondary:hover { border-color: #FF7300; }
+    .btn-row { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: #9ca3af; font-size: 0.9rem; text-decoration: none; margin-bottom: 24px; }
+    .back-link:hover { color: #FF7300; }
+    footer { background: #0F1728; border-top: 1px solid rgba(255,255,255,0.06); padding: 48px 0; }
+    footer p { font-size: 0.875rem; color: #9ca3af; text-align: center; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+    /* TIPS */
+    .tip { background: rgba(6,182,212,0.08); border-left: 3px solid #06b6d4; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+    .tip p { font-size: 0.85rem; color: rgba(255,255,255,0.85); }
+    .tip strong { color: #06b6d4; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo-mark">
+      <div class="logo-icon">P</div>
+      <div class="logo-text"><span class="logo-top">PROPELLO</span><span class="logo-bottom">AI PROPOSAL BUILDER</span></div>
+    </a>
+    <a href="/members" style="color:#fff;font-size:0.85rem;font-weight:600;text-decoration:none;">← Dashboard</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1>📝 Client Research Worksheet</h1>
+    <p>Fill this out before every proposal to understand what the client really needs.</p>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="container">
+    <a href="/members" class="back-link">← Back to Dashboard</a>
+
+    <div class="worksheet-card">
+
+      <!-- SAVE STATUS -->
+      <div id="save-status" style="font-size:0.85rem;color:#9ca3af;text-align:right;margin-bottom:16px;"></div>
+
+      <!-- SECTION 1 -->
+      <div class="section-block">
+        <div class="section-icon">🎯</div>
+        <div class="section-title">1. Client Snapshot</div>
+        <div class="section-desc">The basics — who they are and what they're asking for.</div>
+        <div class="field-group">
+          <label>Client / Company Name</label>
+          <input type="text" class="ws-field" data-key="client-name" placeholder="e.g. Acme Corp">
+        </div>
+        <div class="field-group">
+          <label>Project Type / Job Title</label>
+          <input type="text" class="ws-field" data-key="project-type" placeholder="e.g. Shopify Store Redesign">
+        </div>
+        <div class="field-group">
+          <label>Platform (Upwork, Fiverr, Cold Email, etc.)</label>
+          <input type="text" class="ws-field" data-key="platform" placeholder="e.g. Upwork">
+        </div>
+        <div class="field-group">
+          <label>Budget Range</label>
+          <input type="text" class="ws-field" data-key="budget" placeholder="e.g. $500–$1,000">
+        </div>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="section-block">
+        <div class="section-icon">💡</div>
+        <div class="section-title">2. The Real Need</div>
+        <div class="section-desc">What the client actually needs vs. what they're asking for.</div>
+        <div class="field-group">
+          <label>What problem are they trying to solve?</label>
+          <textarea class="ws-field" data-key="problem" placeholder="Write this in your own words..."></textarea>
+        </div>
+        <div class="field-group">
+          <label>What's the "surface ask" vs. the real need?</label>
+          <textarea class="ws-field" data-key="surface-vs-real" placeholder="They say they want X, but what they really need is Y..."></textarea>
+        </div>
+        <div class="field-group">
+          <label>What happens if this problem doesn't get solved?</label>
+          <textarea class="ws-field" data-key="consequence" placeholder="Cost, delay, missed opportunity, frustration..."></textarea>
+        </div>
+        <div class="tip"><p><strong>💡 Why this matters:</strong> Clients hire for outcomes, not tasks. The proposal that addresses the real need always wins over the one that just lists services.</p></div>
+      </div>
+
+      <!-- SECTION 3 -->
+      <div class="section-block">
+        <div class="section-icon">🔍</div>
+        <div class="section-title">3. Competitive Intel</div>
+        <div class="section-desc">What other applicants will say and how to stand out.</div>
+        <div class="field-group">
+          <label>What will most other applicants say?</label>
+          <textarea class="ws-field" data-key="competitors-say" placeholder="I can do this. I have X years experience. Here's my portfolio."></textarea>
+        </div>
+        <div class="field-group">
+          <label>What unique angle will YOU take?</label>
+          <textarea class="ws-field" data-key="unique-angle" placeholder="e.g. I focus on the specific framework, process, or result they need"></textarea>
+        </div>
+        <div class="field-group">
+          <label>What has the client tried before (that failed)?</label>
+          <textarea class="ws-field" data-key="tried-before" placeholder="Check their history, reviews, or similar posts..."></textarea>
+        </div>
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="section-block">
+        <div class="section-icon">📊</div>
+        <div class="section-title">4. Your Fit</div>
+        <div class="section-desc">Your specific experience that aligns with this project.</div>
+        <div class="field-group">
+          <label>Relevant experience or similar project</label>
+          <textarea class="ws-field" data-key="relevant-exp" placeholder="I did something similar for [Client] and it resulted in [Metric]"></textarea>
+        </div>
+        <div class="field-group">
+          <label>Specific result you can promise or reference</label>
+          <textarea class="ws-field" data-key="specific-result" placeholder="e.g. Cut their turnaround time by 40%, increased conversion by 25%"></textarea>
+        </div>
+      </div>
+
+      <!-- SECTION 5 -->
+      <div class="section-block">
+        <div class="section-icon">✍️</div>
+        <div class="section-title">5. Proposal Strategy</div>
+        <div class="section-desc">Lock in your approach before writing.</div>
+        <div class="field-group">
+          <label>Best framework for this client</label>
+          <select class="ws-field" data-key="framework" style="width:100%;padding:12px 14px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.9rem;">
+            <option value="">Select a framework...</option>
+            <option value="problem-solution">Problem → Solution</option>
+            <option value="before-after">Before → After</option>
+            <option value="credibility">Credibility</option>
+            <option value="direct-pitch">Direct Pitch</option>
+            <option value="case-study">Case Study</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Primary emotional driver</label>
+          <input type="text" class="ws-field" data-key="emotion" placeholder="e.g. Relief, confidence, excitement, trust">
+        </div>
+        <div class="field-group">
+          <label>Single message / core idea (one sentence)</label>
+          <textarea class="ws-field" data-key="core-message" placeholder="This proposal is about..."></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-export" onclick="saveWorksheet()">💾 Save Progress</button>
+        <button class="btn-export secondary" onclick="exportWorksheet()">📋 Export as Notes</button>
+        <button class="btn-export secondary" onclick="clearWorksheet()">🗑️ Clear</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner"><p>© 2026 Propello. All rights reserved.</p></div>
+</footer>
+
+<script>
+function saveWorksheet() {
+  const fields = document.querySelectorAll('.ws-field');
+  const data = {};
+  fields.forEach(f => { data[f.dataset.key] = f.value; });
+  localStorage.setItem('propello-worksheet', JSON.stringify(data));
+  document.getElementById('save-status').textContent = '✅ Saved at ' + new Date().toLocaleTimeString();
+  setTimeout(() => { document.getElementById('save-status').textContent = ''; }, 3000);
+}
+
+function loadWorksheet() {
+  const saved = localStorage.getItem('propello-worksheet');
+  if (!saved) return;
+  const data = JSON.parse(saved);
+  document.querySelectorAll('.ws-field').forEach(f => {
+    if (data[f.dataset.key]) f.value = data[f.dataset.key];
+  });
+}
+
+function exportWorksheet() {
+  const fields = document.querySelectorAll('.ws-field');
+  let text = '🔍 CLIENT RESEARCH WORKSHEET\n';
+  text += '═══════════════════════════════\n\n';
+  fields.forEach(f => {
+    const label = f.closest('.field-group').querySelector('label')?.textContent || f.dataset.key;
+    if (f.value.trim()) {
+      text += label + '\n' + f.value.trim() + '\n\n';
+    }
+  });
+  text += 'Generated by Propello — propello-omega.vercel.app';
+  navigator.clipboard.writeText(text).then(() => {
+    const status = document.getElementById('save-status');
+    status.textContent = '📋 Copied to clipboard!';
+    setTimeout(() => { status.textContent = ''; }, 3000);
+  });
+}
+
+function clearWorksheet() {
+  if (!confirm('Clear all fields?')) return;
+  document.querySelectorAll('.ws-field').forEach(f => f.value = '');
+  localStorage.removeItem('propello-worksheet');
+  document.getElementById('save-status').textContent = '🗑️ Cleared';
+  setTimeout(() => { document.getElementById('save-status').textContent = ''; }, 2000);
+}
+
+loadWorksheet();
+</script>
+</body>
+</html>

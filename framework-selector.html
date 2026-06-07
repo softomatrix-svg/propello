@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propello — Framework Selector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #000; color: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+    nav { width: 100%; padding: 16px 0; background: rgba(15,23,40,0.95); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+    .logo-mark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { background: linear-gradient(135deg,#6C63FF,#3B82F6); color: #fff; font-weight: 900; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-top { font-size: 0.95rem; font-weight: 700; color: #fff; line-height: 1.1; }
+    .logo-bottom { font-size: 0.65rem; font-weight: 600; color: #FF7300; letter-spacing: 0.06em; text-transform: uppercase; }
+    .page-header { background: linear-gradient(135deg, #1a2744 0%, #0F1728 40%, #06b6d4 100%); padding: 64px 0; text-align: center; }
+    .page-header h1 { font-size: 2.5rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .page-header p { font-size: 1.1rem; color: rgba(255,255,255,0.8); max-width: 500px; margin: 0 auto; }
+    .page-content { background: #0F1728; padding: 48px 0; }
+
+    /* QUIZ */
+    .quiz-card { background: #1a2744; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px; }
+    .question { margin-bottom: 32px; }
+    .question:last-child { margin-bottom: 0; }
+    .q-label { font-size: 0.85rem; color: #9ca3af; margin-bottom: 8px; }
+    .q-text { font-size: 1.2rem; font-weight: 600; color: #fff; margin-bottom: 16px; }
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .option { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+    .option:hover { border-color: #06b6d4; background: rgba(6,182,212,0.06); }
+    .option.selected { border-color: #FF7300; background: rgba(255,115,0,0.08); }
+    .option input[type="radio"] { accent-color: #FF7300; width: 18px; height: 18px; flex-shrink: 0; }
+    .option label { color: #fff; font-size: 0.95rem; cursor: pointer; flex: 1; }
+
+    /* RESULT */
+    .result { display: none; margin-top: 32px; padding: 24px; border-radius: 12px; }
+    .result.show { display: block; }
+    .result .rec-framework { font-size: 1.75rem; font-weight: 700; color: #FF7300; margin-bottom: 4px; }
+    .result .rec-sub { font-size: 0.95rem; color: #9ca3af; margin-bottom: 16px; }
+    .result .rec-desc { font-size: 1rem; color: rgba(255,255,255,0.85); line-height: 1.7; }
+    .result .rec-desc strong { color: #fff; }
+    .result-example { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 16px; margin-top: 16px; }
+    .result-example p { font-size: 0.9rem; color: rgba(255,255,255,0.8); font-style: italic; }
+    .result-example .label { font-size: 0.75rem; color: #06b6d4; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; font-weight: 600; }
+
+    .btn-reset { display: inline-flex; align-items: center; padding: 12px 28px; background: #FF7300; color: #fff; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 24px; transition: all 0.2s; }
+    .btn-reset:hover { background: #FF8C33; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: #9ca3af; font-size: 0.9rem; text-decoration: none; margin-bottom: 24px; }
+    .back-link:hover { color: #FF7300; }
+    footer { background: #0F1728; border-top: 1px solid rgba(255,255,255,0.06); padding: 48px 0; }
+    footer p { font-size: 0.875rem; color: #9ca3af; text-align: center; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo-mark">
+      <div class="logo-icon">P</div>
+      <div class="logo-text"><span class="logo-top">PROPELLO</span><span class="logo-bottom">AI PROPOSAL BUILDER</span></div>
+    </a>
+    <a href="/members" style="color:#fff;font-size:0.85rem;font-weight:600;text-decoration:none;">← Dashboard</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1>🎯 Framework Selector</h1>
+    <p>Answer 4 quick questions. We'll tell you exactly which framework to use.</p>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="container">
+    <a href="/members" class="back-link">← Back to Dashboard</a>
+
+    <div class="quiz-card">
+      <!-- Q1 -->
+      <div class="question">
+        <div class="q-label">Question 1 of 4</div>
+        <div class="q-text">What type of opportunity is this?</div>
+        <div class="options" data-question="q1">
+          <div class="option"><input type="radio" name="q1" value="problem" id="q1a"><label for="q1a">The client has a clear, stated problem they need solved</label></div>
+          <div class="option"><input type="radio" name="q1" value="transformation" id="q1b"><label for="q1b">The client wants to go from Point A to Point B</label></div>
+          <div class="option"><input type="radio" name="q1" value="expertise" id="q1c"><label for="q1c">The client needs to trust someone with expertise</label></div>
+          <div class="option"><input type="radio" name="q1" value="direct" id="q1d"><label for="q1d">Short-term / quick-hit job, high volume applications</label></div>
+          <div class="option"><input type="radio" name="q1" value="high-ticket" id="q1e"><label for="q1e">High-ticket retainer or long-term engagement</label></div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question">
+        <div class="q-label">Question 2 of 4</div>
+        <div class="q-text">How urgent is the client's need?</div>
+        <div class="options" data-question="q2">
+          <div class="option"><input type="radio" name="q2" value="urgent" id="q2a"><label for="q2a">Very urgent — they want it done yesterday</label></div>
+          <div class="option"><input type="radio" name="q2" value="moderate" id="q2b"><label for="q2b">Moderate — they're actively looking but not rushing</label></div>
+          <div class="option"><input type="radio" name="q2" value="exploring" id="q2c"><label for="q2c">Exploring — they're curious, not committed yet</label></div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question">
+        <div class="q-label">Question 3 of 4</div>
+        <div class="q-text">What's your strongest asset for this client?</div>
+        <div class="options" data-question="q3">
+          <div class="option"><input type="radio" name="q3" value="similar-result" id="q3a"><label for="q3a">I've solved this exact problem for someone similar</label></div>
+          <div class="option"><input type="radio" name="q3" value="speed" id="q3b"><label for="q3b">I can deliver faster or cheaper than others</label></div>
+          <div class="option"><input type="radio" name="q3" value="credentials" id="q3c"><label for="q3c">I have deep expertise or credentials in this area</label></div>
+          <div class="option"><input type="radio" name="q3" value="process" id="q3d"><label for="q3d">I have a unique process or methodology</label></div>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question">
+        <div class="q-label">Question 4 of 4</div>
+        <div class="q-text">What's the client's awareness level?</div>
+        <div class="options" data-question="q4">
+          <div class="option"><input type="radio" name="q4" value="unaware" id="q4a"><label for="q4a">They don't fully understand what they need yet</label></div>
+          <div class="option"><input type="radio" name="q4" value="aware-problem" id="q4b"><label for="q4b">They know their problem but not the solution</label></div>
+          <div class="option"><input type="radio" name="q4" value="aware-solution" id="q4c"><label for="q4c">They know both the problem AND the solution they want</label></div>
+          <div class="option"><input type="radio" name="q4" value="most-aware" id="q4d"><label for="q4d">They know exactly what they want, just picking who does it</label></div>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="result" id="result">
+        <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:32px;">
+          <div class="rec-framework" id="rec-name"></div>
+          <div class="rec-sub" id="rec-sub"></div>
+          <div class="rec-desc" id="rec-desc"></div>
+          <div class="result-example" id="rec-example">
+            <div class="label">Example Opening</div>
+            <p id="rec-example-text"></p>
+          </div>
+          <button class="btn-reset" onclick="resetQuiz()">↺ Start Over</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner"><p>© 2026 Propello. All rights reserved.</p></div>
+</footer>
+
+<script>
+const frameworks = {
+  'problem-solution': {
+    name: 'Problem → Solution',
+    sub: 'Best for: Clear problems that need solving',
+    desc: '<strong>When to use:</strong> The client has stated a specific problem and needs someone to fix it. This is the most straightforward framework — you show you understand the problem, then present your solution. Works great on Upwork and Fiverr where clients post problems directly.',
+    example: '"I read through your project and I see the issue — you\'re spending hours manually formatting client reports. I built a system that automates this entirely, cutting that time to under 10 minutes per report."'
+  },
+  'before-after': {
+    name: 'Before → After',
+    sub: 'Best for: Transformation-focused engagements',
+    desc: '<strong>When to use:</strong> The client wants to go from where they are to where they want to be. Paint the "before" picture (their current pain/struggle), then paint the "after" (the transformed state), then position yourself as the bridge. Perfect for cold outreach and brand/growth work.',
+    example: '"Right now, your website is getting traffic but converting at 1.2%. Imagine if that number hit 4% — that\'s 3x the leads from the same visitors. Here\'s exactly how I\'ve done that for three other SaaS companies this year."'
+  },
+  'credibility': {
+    name: 'Credibility',
+    sub: 'Best for: High-stakes decisions, trust-sensitive clients',
+    desc: '<strong>When to use:</strong> The client needs reassurance that you\'re the right person. Lead with proof — case studies, metrics, testimonials, relevant experience. This is the framework to use when the client is risk-averse or the project is complex/high-budget.',
+    example: '"I\'ve spent the last 6 years specializing in Shopify migrations. I\'ve moved 40+ stores without a single day of downtime. My most recent project was migrating a $2M/year store for Brand X — completed 3 days early."'
+  },
+  'direct-pitch': {
+    name: 'Direct Pitch',
+    sub: 'Best for: High-volume, quick-turnaround applications',
+    desc: '<strong>When to use:</strong> Short job posts, high-volume platforms, or when everyone is applying with the same template. Get straight to the point — who you are, what you offer, why you\'re the best fit, and a clear CTA. No fluff, no storytelling.',
+    example: '"Hi, I\'m a Unity developer with 4 years and 30+ shipped games. I can have a working prototype of this mechanic ready within 48 hours. Portfolio link attached. Happy to start immediately. — Alex"'
+  },
+  'case-study': {
+    name: 'Case Study',
+    sub: 'Best for: Retainers, agencies, and high-ticket clients',
+    desc: '<strong>When to use:</strong> The client wants proof before committing long-term. Walk them through a specific transformation you delivered for a similar client. Structure: Client situation → Your approach → The result → What it means for them. Ideal for retainer and partnership proposals.',
+    example: '"When I started with Company Y, their social engagement was averaging 12 likes per post. Within 3 months, we hit 850+ average. The strategy? A mix of UGC content, strategic reposting, and community engagement. Here\'s how I\'d apply the same approach to your brand..."'
+  }
+};
+
+function getFramework(q1, q2, q3, q4) {
+  if (q1 === 'problem') return 'problem-solution';
+  if (q1 === 'transformation' && (q2 === 'exploring' || q4 === 'unaware')) return 'before-after';
+  if (q1 === 'expertise' && (q4 === 'most-aware' || q3 === 'credentials')) return 'credibility';
+  if (q1 === 'direct') return 'direct-pitch';
+  if (q1 === 'high-ticket' || q3 === 'similar-result') return 'case-study';
+  return 'problem-solution';
+}
+
+document.querySelectorAll('input[type="radio"]').forEach(input => {
+  input.addEventListener('change', function() {
+    // Visual selection
+    const parent = this.closest('.options');
+    parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    this.closest('.option').classList.add('selected');
+
+    // Check if all answered
+    const q1 = document.querySelector('input[name="q1"]:checked');
+    const q2 = document.querySelector('input[name="q2"]:checked');
+    const q3 = document.querySelector('input[name="q3"]:checked');
+    const q4 = document.querySelector('input[name="q4"]:checked');
+    if (q1 && q2 && q3 && q4) {
+      const fw = getFramework(q1.value, q2.value, q3.value, q4.value);
+      const data = frameworks[fw];
+      document.getElementById('rec-name').textContent = data.name;
+      document.getElementById('rec-sub').textContent = data.sub;
+      document.getElementById('rec-desc').innerHTML = data.desc;
+      document.getElementById('rec-example-text').textContent = data.example;
+      document.getElementById('result').classList.add('show');
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+function resetQuiz() {
+  document.querySelectorAll('input[type="radio"]').forEach(i => i.checked = false);
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.getElementById('result').classList.remove('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propello — Proposal Scorecard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #000; color: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+    nav { width: 100%; padding: 16px 0; background: rgba(15,23,40,0.95); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+    .logo-mark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { background: linear-gradient(135deg,#6C63FF,#3B82F6); color: #fff; font-weight: 900; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-top { font-size: 0.95rem; font-weight: 700; color: #fff; line-height: 1.1; }
+    .logo-bottom { font-size: 0.65rem; font-weight: 600; color: #FF7300; letter-spacing: 0.06em; text-transform: uppercase; }
+    .page-header { background: linear-gradient(135deg, #1a2744 0%, #0F1728 40%, #06b6d4 100%); padding: 64px 0; text-align: center; }
+    .page-header h1 { font-size: 2.5rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .page-header p { font-size: 1.1rem; color: rgba(255,255,255,0.8); max-width: 500px; margin: 0 auto; }
+    .page-content { background: #0F1728; padding: 48px 0; }
+
+    .scorecard { background: #1a2744; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px; }
+
+    /* PROGRESS BAR */
+    .score-header { margin-bottom: 32px; text-align: center; }
+    .score-number { font-size: 3.5rem; font-weight: 700; color: #FF7300; }
+    .score-label { font-size: 0.9rem; color: #9ca3af; margin-bottom: 16px; }
+    .score-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+    .score-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #FF7300, #FF9A0D); border-radius: 4px; transition: width 0.5s ease; }
+
+    /* CHECKLIST */
+    .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; }
+    .checklist-item:last-child { border-bottom: none; }
+    .check-box { width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.2); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin-top: 2px; }
+    .checklist-item.done .check-box { background: #FF7300; border-color: #FF7300; }
+    .check-box svg { width: 14px; height: 14px; color: #fff; display: none; }
+    .checklist-item.done .check-box svg { display: block; }
+    .check-text { flex: 1; }
+    .check-title { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 2px; }
+    .check-desc { font-size: 0.85rem; color: #9ca3af; }
+    .checklist-item.done .check-title { color: rgba(255,255,255,0.5); text-decoration: line-through; }
+
+    .score-message { margin-top: 24px; padding: 16px; border-radius: 10px; text-align: center; display: none; }
+    .score-message.show { display: block; }
+    .score-message.green { background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); }
+    .score-message.yellow { background: rgba(255,115,0,0.1); border: 1px solid rgba(255,115,0,0.2); }
+    .score-message.red { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); }
+    .score-message p { font-size: 1rem; }
+    .score-message.green p { color: #06b6d4; }
+    .score-message.yellow p { color: #FF7300; }
+    .score-message.red p { color: #ef4444; }
+
+    .btn-reset { display: inline-flex; align-items: center; padding: 12px 28px; background: #FF7300; color: #fff; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 24px; transition: all 0.2s; }
+    .btn-reset:hover { background: #FF8C33; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: #9ca3af; font-size: 0.9rem; text-decoration: none; margin-bottom: 24px; }
+    .back-link:hover { color: #FF7300; }
+    footer { background: #0F1728; border-top: 1px solid rgba(255,255,255,0.06); padding: 48px 0; }
+    footer p { font-size: 0.875rem; color: #9ca3af; text-align: center; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo-mark">
+      <div class="logo-icon">P</div>
+      <div class="logo-text"><span class="logo-top">PROPELLO</span><span class="logo-bottom">AI PROPOSAL BUILDER</span></div>
+    </a>
+    <a href="/members" style="color:#fff;font-size:0.85rem;font-weight:600;text-decoration:none;">← Dashboard</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1>✅ Proposal Scorecard</h1>
+    <p>Run your proposal through this checklist before hitting send.</p>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="container">
+    <a href="/members" class="back-link">← Back to Dashboard</a>
+
+    <div class="scorecard">
+      <div class="score-header">
+        <div class="score-number" id="score-number">0/15</div>
+        <div class="score-label">Checklist Score</div>
+        <div class="score-bar-bg">
+          <div class="score-bar-fill" id="score-bar"></div>
+        </div>
+      </div>
+
+      <div id="checklist">
+        <div class="checklist-item" data-category="hook">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">🎣 Powerful Hook in First Line</div><div class="check-desc">Opens with something specific to the client, not "I'm interested in your project"</div></div>
+        </div>
+        <div class="checklist-item" data-category="specific">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">📌 References the Job Post Specifically</div><div class="check-desc">Mentions a detail from their description that shows you actually read it</div></div>
+        </div>
+        <div class="checklist-item" data-category="problem">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">💡 Identifies the Core Problem</div><div class="check-desc">Shows you understand the real need, not just the surface-level ask</div></div>
+        </div>
+        <div class="checklist-item" data-category="solution">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">🔧 Presents a Clear Solution</div><div class="check-desc">Explains HOW you'll solve their problem, not just THAT you can</div></div>
+        </div>
+        <div class="checklist-item" data-category="proof">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">🏆 Includes Relevant Proof</div><div class="check-desc">A result, a statistic, a client name (or similar) that backs up your claim</div></div>
+        </div>
+        <div class="checklist-item" data-category="custom">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">✏️ Includes a Personal Touch</div><div class="check-desc">Something that makes it sound like YOU, not a template</div></div>
+        </div>
+        <div class="checklist-item" data-category="length">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">📏 Right Length (150–350 words)</div><div class="check-desc">Long enough to show you care, short enough they'll actually read it</div></div>
+        </div>
+        <div class="checklist-item" data-category="readable">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">📖 Easy to Scan</div><div class="check-desc">Short paragraphs, white space, key points stand out visually</div></div>
+        </div>
+        <div class="checklist-item" data-category="jargon">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">🚫 No Buzzwords or Jargon</div><div class="check-desc">No "synergize," "leverage," "circle back" — keeps it real</div></div>
+        </div>
+        <div class="checklist-item" data-category="cta">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">🎯 Clear Call to Action</div><div class="check-desc">Tells them exactly what to do next (call, reply, schedule)</div></div>
+        </div>
+        <div class="checklist-item" data-category="confidence">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">💪 Confident, Not Desperate</div><div class="check-desc">No "I hope you'll consider," no hedging language</div></div>
+        </div>
+        <div class="checklist-item" data-category="grammar">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">✅ No Typos or Grammar Errors</div><div class="check-desc">Proofread once. Out loud. Then proofread again.</div></div>
+        </div>
+        <div class="checklist-item" data-category="value">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">💰 Mentions ROI or Value</div><div class="check-desc">Shows the client what they gain, not just what you do</div></div>
+        </div>
+        <div class="checklist-item" data-category="framework">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">📐 Uses a Clear Framework</div><div class="check-desc">Problem-Solution, Before-After, Credibility, etc. — not a ramble</div></div>
+        </div>
+        <div class="checklist-item" data-category="send-ready">
+          <div class="check-box"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="check-text"><div class="check-title">🚀 Ready to Send?</div><div class="check-desc">You'd be happy with this proposal if you were the client reading it</div></div>
+        </div>
+      </div>
+
+      <div class="score-message" id="score-message">
+        <p id="score-message-text"></p>
+      </div>
+
+      <button class="btn-reset" onclick="resetScorecard()">↺ Reset</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner"><p>© 2026 Propello. All rights reserved.</p></div>
+</footer>
+
+<script>
+const items = document.querySelectorAll('.checklist-item');
+const totalItems = items.length;
+const scoreNum = document.getElementById('score-number');
+const scoreBar = document.getElementById('score-bar');
+const message = document.getElementById('score-message');
+const messageText = document.getElementById('score-message-text');
+
+function updateScore() {
+  const done = document.querySelectorAll('.checklist-item.done').length;
+  const pct = Math.round((done / totalItems) * 100);
+  scoreNum.textContent = `${done}/${totalItems}`;
+  scoreBar.style.width = pct + '%';
+
+  if (done === totalItems) {
+    message.className = 'score-message show green';
+    messageText.textContent = '🔥 Excellent! This proposal is ready to send. High conversion potential.';
+  } else if (done >= 12) {
+    message.className = 'score-message show green';
+    messageText.textContent = '👍 Strong proposal! Review the unchecked items for a polish pass.';
+  } else if (done >= 8) {
+    message.className = 'score-message show yellow';
+    messageText.textContent = '⏳ Decent start. Fill in the missing elements before sending.';
+  } else {
+    message.className = 'score-message show red';
+    messageText.textContent = '⚠️ This proposal needs work. Go through each item before hitting send.';
+  }
+}
+
+items.forEach(item => {
+  item.addEventListener('click', () => {
+    item.classList.toggle('done');
+    updateScore();
+  });
+});
+
+function resetScorecard() {
+  items.forEach(i => i.classList.remove('done'));
+  message.className = 'score-message';
+  updateScore();
+}
+</script>
+</body>
+</html>

@@ -3,6 +3,11 @@
     { "source": "/", "destination": "/index.html" },
     { "source": "/thank-you", "destination": "/thank-you.html" },
     { "source": "/members", "destination": "/members.html" },
-    { "source": "/modules/module-1", "destination": "/module-1.html" }
+    { "source": "/modules/module-1", "destination": "/module-1.html" },
+    { "source": "/templates", "destination": "/templates.html" },
+    { "source": "/framework-selector", "destination": "/framework-selector.html" },
+    { "source": "/scorecard", "destination": "/scorecard.html" },
+    { "source": "/swipe-file", "destination": "/swipe-file.html" },
+    { "source": "/worksheet", "destination": "/worksheet.html" }
   ]
 }

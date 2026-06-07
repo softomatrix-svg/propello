@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propello — Template Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #000; color: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+    nav { width: 100%; padding: 16px 0; background: rgba(15,23,40,0.95); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+    .logo-mark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { background: linear-gradient(135deg,#6C63FF,#3B82F6); color: #fff; font-weight: 900; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-top { font-size: 0.95rem; font-weight: 700; color: #fff; letter-spacing: 0.03em; line-height: 1.1; }
+    .logo-bottom { font-size: 0.65rem; font-weight: 600; color: #FF7300; letter-spacing: 0.06em; text-transform: uppercase; }
+    .page-header { background: linear-gradient(135deg, #1a2744 0%, #0F1728 40%, #06b6d4 100%); padding: 64px 0; text-align: center; }
+    .page-header h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.025em; color: #fff; margin-bottom: 12px; }
+    .page-header p { font-size: 1.1rem; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto; }
+    .page-content { background: #0F1728; padding: 48px 0; }
+
+    /* TEMPLATE TABS */
+    .tab-row { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+    .tab-btn { padding: 10px 20px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #9ca3af; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .tab-btn:hover { border-color: #FF7300; color: #fff; }
+    .tab-btn.active { background: #FF7300; border-color: #FF7300; color: #fff; }
+
+    /* TEMPLATE CARD */
+    .template-card { display: none; background: #1a2744; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px; }
+    .template-card.active { display: block; }
+    .template-card h2 { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .template-card .best-for { font-size: 0.85rem; color: #FF7300; font-weight: 600; margin-bottom: 24px; }
+    .template-card .framework-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; background: rgba(6,182,212,0.15); color: #06b6d4; font-size: 0.8rem; font-weight: 600; margin-bottom: 24px; }
+    .template-body { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+    .template-body .field { margin-bottom: 16px; }
+    .template-body .field-label { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; font-weight: 600; }
+    .template-body .field-content { font-size: 0.95rem; color: rgba(255,255,255,0.9); line-height: 1.7; white-space: pre-wrap; }
+    .template-body .field-content .placeholder { color: #FF7300; font-style: italic; }
+    .copy-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+    .copy-btn:hover { background: #FF7300; border-color: #FF7300; }
+    .copy-btn.copied { background: #06b6d4; border-color: #06b6d4; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: #9ca3af; font-size: 0.9rem; text-decoration: none; margin-bottom: 24px; transition: color 0.2s; }
+    .back-link:hover { color: #FF7300; }
+    footer { background: #0F1728; border-top: 1px solid rgba(255,255,255,0.06); padding: 48px 0; }
+    footer p { font-size: 0.875rem; color: #9ca3af; text-align: center; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo-mark">
+      <div class="logo-icon">P</div>
+      <div class="logo-text"><span class="logo-top">PROPELLO</span><span class="logo-bottom">AI PROPOSAL BUILDER</span></div>
+    </a>
+    <a href="/members" style="color:#fff;font-size:0.85rem;font-weight:600;text-decoration:none;">← Dashboard</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1>📋 Template Library</h1>
+    <p>5 ready-to-use proposal templates for every freelance situation.</p>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="container">
+    <a href="/members" class="back-link">← Back to Dashboard</a>
+
+    <div class="tab-row">
+      <button class="tab-btn active" data-template="upwork">Upwork</button>
+      <button class="tab-btn" data-template="cold-email">Cold Email</button>
+      <button class="tab-btn" data-template="agency">Agency</button>
+      <button class="tab-btn" data-template="retainer">Retainer</button>
+      <button class="tab-btn" data-template="partnership">Partnership</button>
+    </div>
+
+    <!-- UPWORK -->
+    <div class="template-card active" id="template-upwork">
+      <h2>Upwork Proposal</h2>
+      <div class="best-for">Best for: Freelance marketplaces (Upwork, Fiverr, Freelancer.com)</div>
+      <div class="framework-tag">🔷 Framework: Problem-Solution</div>
+      <div class="template-body">
+        <div class="field">
+          <div class="field-label">Subject / Title</div>
+          <div class="field-content">I can help you <span class="placeholder">[solve specific problem from the job]</span></div>
+        </div>
+        <div class="field">
+          <div class="field-label">Opening Hook</div>
+          <div class="field-content">Hi <span class="placeholder">[Client Name]</span>, I read through your project and I see exactly what you're looking for. You need <span class="placeholder">[core need]</span> — and I've done this <span class="placeholder">[X]</span> times before.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">The Problem You Solve</div>
+          <div class="field-content">Most freelancers will tell you what they *can* do. I'll tell you what you *need* done. Your project needs someone who understands <span class="placeholder">[key requirement]</span>, and I noticed the biggest challenge here is <span class="placeholder">[specific challenge]</span>.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Your Solution</div>
+          <div class="field-content">Here's my approach: <span class="placeholder">[2-3 sentence breakdown of your solution]</span>. I've delivered similar results for <span class="placeholder">[similar client/industry]</span>, and I'm confident I can do the same for you.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Relevant Experience</div>
+          <div class="field-content">Some quick context: I've been doing <span class="placeholder">[your skill]</span> for <span class="placeholder">[X years]</span> and have completed <span class="placeholder">[X]</span> similar projects. My most recent one was <span class="placeholder">[brief 1-liner]</span>.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Call to Action</div>
+          <div class="field-content">I'm available to start as early as <span class="placeholder">[date]</span>. Would you be open to a brief call to discuss your project in more detail?</div>
+        </div>
+      </div>
+      <button class="copy-btn" onclick="copyTemplate('upwork')">📋 Copy Template</button>
+    </div>
+
+    <!-- COLD EMAIL -->
+    <div class="template-card" id="template-cold-email">
+      <h2>Cold Email Proposal</h2>
+      <div class="best-for">Best for: Direct outreach to potential clients via email</div>
+      <div class="framework-tag">🔷 Framework: Before-After</div>
+      <div class="template-body">
+        <div class="field">
+          <div class="field-label">Subject Line</div>
+          <div class="field-content">Quick idea for <span class="placeholder">[Company Name]</span></div>
+        </div>
+        <div class="field">
+          <div class="field-label">Opening</div>
+          <div class="field-content">Hi <span class="placeholder">[Name]</span>, I've been following <span class="placeholder">[Company Name]</span> and noticed <span class="placeholder">[specific observation / compliment]</span>. Really impressive work with <span class="placeholder">[specific initiative]</span>.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">The Before (Current State)</div>
+          <div class="field-content">Right now, I imagine you're spending a lot of time <span class="placeholder">[current pain]</span>. Most companies in your space struggle with <span class="placeholder">[specific challenge]</span>, and it's costing them <span class="placeholder">[lost opportunity / time / money]</span>.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">The After (Transformation)</div>
+          <div class="field-content">What if you could <span class="placeholder">[desired outcome]</span> without the <span class="placeholder">[friction]</span>? I helped <span class="placeholder">[similar client]</span> achieve <span class="placeholder">[specific result]</span> by <span class="placeholder">[your approach]</span>.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Low-Friction CTA</div>
+          <div class="field-content">Would you be open to a 10-minute call this week? No pitch — just a conversation about whether this makes sense for <span class="placeholder">[Company Name]</span>.</div>
+        </div>
+      </div>
+      <button class="copy-btn" onclick="copyTemplate('cold-email')">📋 Copy Template</button>
+    </div>
+
+    <!-- AGENCY -->
+    <div class="template-card" id="template-agency">
+      <h2>Agency Partnership Proposal</h2>
+      <div class="best-for">Best for: B2B services, marketing agencies, consultancies</div>
+      <div class="framework-tag">🔷 Framework: Credibility</div>
+      <div class="template-body">
+        <div class="field">
+          <div class="field-label">Subject</div>
+          <div class="field-content">Proposal: <span class="placeholder">[Service]</span> for <span class="placeholder">[Company Name]</span></div>
+        </div>
+        <div class="field">
+          <div class="field-label">Executive Summary</div>
+          <div class="field-content"><span class="placeholder">[Company Name]</span> needs <span class="placeholder">[core outcome]</span>. With <span class="placeholder">[X years]</span> of experience delivering <span class="placeholder">[your specialty]</span> for companies like <span class="placeholder">[client references]</span>, I'm confident I can help you achieve <span class="placeholder">[specific KPI]</span>.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Our Track Record</div>
+          <div class="field-content">Over the past <span class="placeholder">[X months]</span>, we've helped <span class="placeholder">[X]</span> clients achieve an average of <span class="placeholder">[X% improvement]</span>. Highlights include: <span class="placeholder">[3 bullet points of results]</span>.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Proposed Approach</div>
+          <div class="field-content">Phase 1: <span class="placeholder">[Discovery & Audit]</span><br>Phase 2: <span class="placeholder">[Strategy & Execution]</span><br>Phase 3: <span class="placeholder">[Optimization & Scale]</span></div>
+        </div>
+        <div class="field">
+          <div class="field-label">Investment</div>
+          <div class="field-content"><span class="placeholder">[Price]</span> for the initial <span class="placeholder">[X weeks/months]</span>. Includes <span class="placeholder">[deliverables summary]</span>.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Next Steps</div>
+          <div class="field-content">I'd love to schedule a strategy call to tailor this proposal to your specific needs. Available <span class="placeholder">[times/dates]</span>.</div>
+        </div>
+      </div>
+      <button class="copy-btn" onclick="copyTemplate('agency')">📋 Copy Template</button>
+    </div>
+
+    <!-- RETAINER -->
+    <div class="template-card" id="template-retainer">
+      <h2>Retainer Proposal</h2>
+      <div class="best-for">Best for: Ongoing monthly engagements, recurring services</div>
+      <div class="framework-tag">🔷 Framework: Case Study</div>
+      <div class="template-body">
+        <div class="field">
+          <div class="field-label">Subject</div>
+          <div class="field-content">Retainer Proposal: Ongoing <span class="placeholder">[Service]</span> for <span class="placeholder">[Company Name]</span></div>
+        </div>
+        <div class="field">
+          <div class="field-label">The Opportunity</div>
+          <div class="field-content">Based on our conversation, I see a clear opportunity for us to work together on an ongoing basis. <span class="placeholder">[Company Name]</span> needs consistent <span class="placeholder">[service]</span>, and a retainer model ensures you get priority access and predictable results.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Case Study (Similar Client)</div>
+          <div class="field-content">When I started working with <span class="placeholder">[Similar Company]</span>, they were <span class="placeholder">[initial situation]</span>. Within <span class="placeholder">[X months]</span> of our retainer engagement, they achieved <span class="placeholder">[specific result]</span>. The key was consistent <span class="placeholder">[your approach]</span>.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Retainer Structure</div>
+          <div class="field-content"><span class="placeholder">[X]</span> hours per month<br>Dedicated <span class="placeholder">[service]</span> support<br>Bi-weekly strategy calls<br>Priority turnaround (<span class="placeholder">[X hours]</span>)<br>Monthly performance report</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Monthly Investment</div>
+          <div class="field-content"><span class="placeholder">[$X/month]</span> — <span class="placeholder">[discount vs hourly]</span> compared to project-based pricing.</div>
+        </div>
+      </div>
+      <button class="copy-btn" onclick="copyTemplate('retainer')">📋 Copy Template</button>
+    </div>
+
+    <!-- PARTNERSHIP -->
+    <div class="template-card" id="template-partnership">
+      <h2>Partnership Proposal</h2>
+      <div class="best-for">Best for: Joint ventures, cross-promotions, referral partnerships</div>
+      <div class="framework-tag">🔷 Framework: Direct Pitch</div>
+      <div class="template-body">
+        <div class="field">
+          <div class="field-label">Subject</div>
+          <div class="field-content">Partnership idea: <span class="placeholder">[Company A]</span> x <span class="placeholder">[Your Company]</span></div>
+        </div>
+        <div class="field">
+          <div class="field-label">The Idea</div>
+          <div class="field-content">I see a natural fit between <span class="placeholder">[Company Name]</span> and what I do. You serve <span class="placeholder">[your audience]</span> with <span class="placeholder">[their product]</span>, and my service <span class="placeholder">[your offering]</span> would be a perfect complement for your audience.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">What I'm Proposing</div>
+          <div class="field-content">A <span class="placeholder">[revenue-share / cross-promotion / referral]</span> partnership where:<br><br>• You <span class="placeholder">[what they do — e.g., recommend my service]</span><br>• I <span class="placeholder">[what you do — e.g., provide value to their audience]</span><br>• We split <span class="placeholder">[terms — e.g., 30/70 on referred clients]</span></div>
+        </div>
+        <div class="field">
+          <div class="field-label">Why It Works</div>
+          <div class="field-content">Your audience already trusts you. When you recommend my <span class="placeholder">[service]</span>, they're far more likely to convert. Meanwhile, I deliver <span class="placeholder">[value to their audience]</span> — which makes you look even better to them.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">First Step</div>
+          <div class="field-content">Let's try a 30-day test. If it works for both of us, we make it permanent. Want to hop on a quick call to map out the details?</div>
+        </div>
+      </div>
+      <button class="copy-btn" onclick="copyTemplate('partnership')">📋 Copy Template</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner"><p>© 2026 Propello. All rights reserved.</p></div>
+</footer>
+
+<script>
+function copyTemplate(name) {
+  const card = document.getElementById('template-' + name);
+  const fields = card.querySelectorAll('.field-content');
+  let text = '';
+  fields.forEach(f => { text += f.innerText.replace(/\u00A0/g, ' ') + '\n\n'; });
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    const btn = card.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy Template'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('template-' + btn.dataset.template).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
