@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propello Dashboard — My Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #000; color: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+    /* NAV */
+    nav { width: 100%; padding: 16px 0; background: rgba(15,23,40,0.95); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+    .logo-mark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { background: linear-gradient(135deg,#6C63FF,#3B82F6); color: #fff; font-weight: 900; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-top { font-size: 0.95rem; font-weight: 700; color: #fff; letter-spacing: 0.03em; line-height: 1.1; }
+    .logo-bottom { font-size: 0.65rem; font-weight: 600; color: #FF7300; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* DASHBOARD HEADER */
+    .dash-header { background: linear-gradient(135deg, #1a2744 0%, #0F1728 40%, #06b6d4 100%); position: relative; overflow: hidden; }
+    .dash-header .content { padding: 64px 0; position: relative; z-index: 1; }
+    .dash-header h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.025em; color: #fff; margin-bottom: 8px; }
+    .dash-header p { font-size: 1.1rem; color: rgba(255,255,255,0.8); }
+
+    /* DASHBOARD BODY */
+    .dash-body { background: #0F1728; min-height: 60vh; padding: 48px 0; }
+
+    /* STATS ROW */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 48px; }
+    @media (max-width: 640px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    .stat-card { background: #1a2744; border-radius: 12px; padding: 24px; text-align: center; }
+    .stat-number { font-size: 1.75rem; font-weight: 700; color: #FF7300; margin-bottom: 4px; }
+    .stat-label { font-size: 0.85rem; color: #9ca3af; }
+
+    /* MODULES */
+    .module-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #FF7300; margin-bottom: 16px; }
+    .module-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 640px) { .module-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .module-grid { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+    .module-card { background: #1a2744; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; text-decoration: none; display: block; transition: all 0.2s; }
+    .module-card:hover { border-color: #FF7300; transform: translateY(-2px); }
+    .module-card .mod-icon { width: 40px; height: 40px; background: rgba(255,115,0,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .module-card .mod-icon svg { width: 20px; height: 20px; color: #FF7300; }
+    .module-card h3 { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .module-card p { font-size: 0.85rem; color: #9ca3af; line-height: 1.4; }
+    .module-card .status { font-size: 0.75rem; color: #06b6d4; margin-top: 12px; font-weight: 600; }
+
+    /* QUICK ACTIONS */
+    .actions-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; }
+    @media (min-width: 640px) { .actions-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .action-card { background: #1a2744; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; }
+    .action-card h3 { font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .action-card p { font-size: 0.85rem; color: #9ca3af; margin-bottom: 16px; }
+    .btn-sm { display: inline-flex; align-items: center; justify-content: center; font-weight: 600; background: #FF7300; color: #fff; font-size: 0.85rem; padding: 10px 20px; border-radius: 8px; height: 36px; text-decoration: none; transition: all 0.2s; }
+    .btn-sm:hover { background: #FF8C33; transform: translateY(-1px); }
+    .btn-outline { display: inline-flex; align-items: center; justify-content: center; font-weight: 600; background: transparent; color: #fff; font-size: 0.85rem; padding: 10px 20px; border-radius: 8px; height: 36px; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; }
+    .btn-outline:hover { border-color: #FF7300; color: #FF7300; }
+
+    .section-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #FF7300; margin-bottom: 16px; }
+
+    /* FOOTER */
+    footer { background: #0F1728; border-top: 1px solid rgba(255,255,255,0.06); padding: 48px 0; }
+    footer p { font-size: 0.875rem; color: #9ca3af; text-align: center; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo-mark">
+      <div class="logo-icon">P</div>
+      <div class="logo-text">
+        <span class="logo-top">PROPELLO</span>
+        <span class="logo-bottom">AI PROPOSAL BUILDER</span>
+      </div>
+    </a>
+    <div style="display:flex;gap:16px;align-items:center;">
+      <a href="/members" style="color:#fff;font-size:0.85rem;font-weight:600;text-decoration:none;">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<!-- DASHBOARD HEADER -->
+<div class="dash-header">
+  <div class="content container">
+    <h1>Welcome back 👋</h1>
+    <p>Your Propello dashboard — build, track, and optimize your proposals.</p>
+  </div>
+</div>
+
+<!-- DASHBOARD BODY -->
+<div class="dash-body">
+  <div class="container">
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Proposals Sent</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">0%</div>
+        <div class="stat-label">Response Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$0</div>
+        <div class="stat-label">Earned from Proposals</div>
+      </div>
+    </div>
+
+    <!-- Modules -->
+    <div class="section-label">Training Modules</div>
+    <div class="module-grid">
+      <a href="/modules/module-1" class="module-card">
+        <div class="mod-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+        </div>
+        <h3>Getting Started with Propello</h3>
+        <p>Set up your profile, learn the interface, and send your first proposal.</p>
+        <div class="status">Start →</div>
+      </a>
+      <a href="/modules/module-1" class="module-card" style="opacity:0.6;">
+        <div class="mod-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></svg>
+        </div>
+        <h3>Mastering the 5 Frameworks</h3>
+        <p>Deep dive into each proposal framework and when to use them.</p>
+        <div class="status">Coming soon</div>
+      </a>
+      <a href="/modules/module-1" class="module-card" style="opacity:0.6;">
+        <div class="mod-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+        </div>
+        <h3>Win Analytics Mastery</h3>
+        <p>Use data to optimize your proposals and double your conversion rate.</p>
+        <div class="status">Coming soon</div>
+      </a>
+      <a href="/modules/module-1" class="module-card" style="opacity:0.6;">
+        <div class="mod-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+        </div>
+        <h3>Speed Workflow</h3>
+        <p>Send 10+ high-quality proposals in under an hour using Speed Mode.</p>
+        <div class="status">Coming soon</div>
+      </a>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-label" style="margin-top:48px;">Quick Actions</div>
+    <div class="actions-grid">
+      <div class="action-card">
+        <h3>New Proposal</h3>
+        <p>Paste a job description and generate a tailored proposal in seconds.</p>
+        <a href="#" class="btn-sm">Create →</a>
+      </div>
+      <div class="action-card">
+        <h3>Review Analytics</h3>
+        <p>See which frameworks and approaches are winning for you.</p>
+        <a href="#" class="btn-outline">View Stats</a>
+      </div>
+      <div class="action-card">
+        <h3>View Templates</h3>
+        <p>Browse the template library for Upwork, cold email, and more.</p>
+        <a href="#" class="btn-outline">Browse</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p>© 2026 Propello. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

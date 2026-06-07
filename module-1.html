@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 1 — Getting Started with Propello</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #000; color: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+
+    /* NAV */
+    nav { width: 100%; padding: 16px 0; background: rgba(15,23,40,0.95); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
+    .logo-mark { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { background: linear-gradient(135deg,#6C63FF,#3B82F6); color: #fff; font-weight: 900; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-top { font-size: 0.95rem; font-weight: 700; color: #fff; letter-spacing: 0.03em; line-height: 1.1; }
+    .logo-bottom { font-size: 0.65rem; font-weight: 600; color: #FF7300; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* BREADCRUMB */
+    .breadcrumb { background: #0F1728; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .breadcrumb a { color: #9ca3af; font-size: 0.85rem; text-decoration: none; }
+    .breadcrumb a:hover { color: #FF7300; }
+    .breadcrumb span { color: #fff; font-size: 0.85rem; }
+
+    /* MODULE HEADER */
+    .mod-header { background: linear-gradient(135deg, #1a2744 0%, #0F1728 40%, #06b6d4 100%); position: relative; overflow: hidden; padding: 64px 0; }
+    .mod-header .content { position: relative; z-index: 1; }
+    .mod-header .section-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #FF7300; margin-bottom: 12px; }
+    .mod-header h1 { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.025em; color: #fff; margin-bottom: 12px; }
+    .mod-header p { font-size: 1.1rem; color: rgba(255,255,255,0.8); }
+    .mod-meta { display: flex; gap: 24px; margin-top: 24px; }
+    .mod-meta span { font-size: 0.85rem; color: #9ca3af; }
+
+    /* MODULE CONTENT */
+    .mod-content { background: #0F1728; padding: 48px 0; }
+    .content-section { margin-bottom: 48px; }
+    .content-section h2 { font-size: 1.5rem; font-weight: 600; color: #fff; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .content-section h3 { font-size: 1.15rem; font-weight: 600; color: #FF7300; margin-bottom: 8px; margin-top: 24px; }
+    .content-section p { font-size: 1rem; color: rgba(255,255,255,0.85); line-height: 1.7; margin-bottom: 16px; }
+    .content-section ul { list-style: none; margin: 16px 0; }
+    .content-section ul li { padding: 8px 0 8px 24px; position: relative; color: rgba(255,255,255,0.85); font-size: 1rem; }
+    .content-section ul li::before { content: '→'; position: absolute; left: 0; color: #FF7300; font-weight: 700; }
+    .tip-box { background: rgba(6,182,212,0.1); border-left: 3px solid #06b6d4; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+    .tip-box p { margin-bottom: 0; font-size: 0.95rem; color: rgba(255,255,255,0.9); }
+    .tip-box strong { color: #06b6d4; }
+
+    /* NAV BUTTONS */
+    .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .btn-primary { display: inline-flex; align-items: center; justify-content: center; font-weight: 600; background: #FF7300; color: #fff; font-size: 0.95rem; padding: 12px 28px; border-radius: 10px; height: 44px; text-decoration: none; letter-spacing: 0.02em; transition: all 0.2s; }
+    .btn-primary:hover { background: #FF8C33; transform: translateY(-2px); }
+    .btn-ghost { display: inline-flex; align-items: center; justify-content: center; font-weight: 600; color: #9ca3af; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; }
+    .btn-ghost:hover { color: #FF7300; }
+
+    /* PROGRESS BAR */
+    .progress-bar { background: rgba(255,255,255,0.08); height: 4px; border-radius: 2px; margin: 0 0 24px; overflow: hidden; }
+    .progress-fill { background: #FF7300; height: 100%; width: 25%; border-radius: 2px; }
+
+    /* FOOTER */
+    footer { background: #0F1728; border-top: 1px solid rgba(255,255,255,0.06); padding: 48px 0; }
+    footer p { font-size: 0.875rem; color: #9ca3af; text-align: center; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo-mark">
+      <div class="logo-icon">P</div>
+      <div class="logo-text">
+        <span class="logo-top">PROPELLO</span>
+        <span class="logo-bottom">AI PROPOSAL BUILDER</span>
+      </div>
+    </a>
+    <a href="/members" style="color:#fff;font-size:0.85rem;font-weight:600;text-decoration:none;">← Back to Dashboard</a>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="container">
+    <a href="/members">Dashboard</a> <span style="color:#9ca3af;"> / </span> <span>Module 1</span>
+  </div>
+</div>
+
+<!-- MODULE HEADER -->
+<div class="mod-header">
+  <div class="container content">
+    <div class="section-label">Module 1 of 4</div>
+    <h1>Getting Started with Propello</h1>
+    <p>Set up your profile, learn the interface, and send your first AI-powered proposal.</p>
+    <div class="mod-meta">
+      <span>📖 5 sections</span>
+      <span>⏱ 15 minutes</span>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE CONTENT -->
+<div class="mod-content">
+  <div class="container">
+
+    <div class="progress-bar"><div class="progress-fill"></div></div>
+
+    <!-- Section 1 -->
+    <div class="content-section">
+      <h2>1. Welcome to Propello</h2>
+      <p>Propello is an AI-powered proposal builder designed specifically for freelancers. Unlike generic AI writing tools, Propello learns from YOUR proposals, adapts to YOUR voice, and uses proven frameworks that actually convert.</p>
+      <p>By the end of this module, you'll have sent your first AI-generated proposal and set up your account for long-term success.</p>
+      <div class="tip-box">
+        <p><strong>💡 Pro tip:</strong> The more proposals you write with Propello, the smarter it gets. It learns which frameworks, hooks, and language patterns work best for you.</p>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="content-section">
+      <h2>2. Setting Up Your Profile</h2>
+      <p>Your profile tells Propello who you are, what you do, and how you write. This is the foundation for every proposal the AI generates.</p>
+      <h3>What to fill in:</h3>
+      <ul>
+        <li><strong>Your Services</strong> — What do you offer? Web dev, design, copywriting, marketing?</li>
+        <li><strong>Experience Level</strong> — Entry, intermediate, expert. This shapes the confidence in your proposals.</li>
+        <li><strong>Writing Style</strong> — Professional, casual, direct. The AI matches your natural voice.</li>
+        <li><strong>Portfolio Links</strong> — Add links to your best work. Propello can reference them in proposals.</li>
+        <li><strong>Rate Range</strong> — Sets the pricing language the AI uses in your proposals.</li>
+      </ul>
+      <p>Take 5 minutes to fill this out thoroughly. The quality of your output directly reflects the quality of your input.</p>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="content-section">
+      <h2>3. Your First Proposal</h2>
+      <p>Let's create your first proposal. Follow these steps:</p>
+      <h3>Step 1: Find a job description</h3>
+      <p>Grab any job post from Upwork, Fiverr, LinkedIn, or a cold outreach target. Copy the full description.</p>
+      <h3>Step 2: Paste into Propello</h3>
+      <p>Click "New Proposal" and paste the job description. Propello's AI will analyze it immediately.</p>
+      <h3>Step 3: Choose a framework</h3>
+      <p>Propello will suggest the best framework based on the job type. You can override:</p>
+      <ul>
+        <li><strong>Problem-Solution</strong> — Best for when the client has clearly stated a problem</li>
+        <li><strong>Before-After</strong> — Best for transformation-focused roles</li>
+        <li><strong>Credibility</strong> — Best when they need to trust your expertise</li>
+        <li><strong>Direct Pitch</strong> — Best for short, high-volume applications</li>
+        <li><strong>Case Study</strong> — Best for high-ticket or retainer clients</li>
+      </ul>
+      <h3>Step 4: Review and personalize</h3>
+      <p>Read through the proposal. Add one or two personal sentences. Make it sound like you.</p>
+      <h3>Step 5: Send</h3>
+      <p>Copy, paste, and send. Track the response in your analytics.</p>
+      <div class="tip-box">
+        <p><strong>⚡ Speed tip:</strong> Use Speed Mode when you're applying to multiple jobs. Generate 5 proposals in under 30 minutes.</p>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="content-section">
+      <h2>4. Understanding Your Dashboard</h2>
+      <p>Your dashboard is your command center. Here's what each section does:</p>
+      <ul>
+        <li><strong>Proposals Sent</strong> — Total proposals generated and sent through Propello</li>
+        <li><strong>Response Rate</strong> — Percentage of proposals that got a reply</li>
+        <li><strong>Frameworks Breakdown</strong> — Which frameworks are converting best for you</li>
+        <li><strong>Win Analytics</strong> — Deeper insights into what's working and what's not</li>
+        <li><strong>AI Content Coach</strong> — Personalized improvement suggestions based on your history</li>
+      </ul>
+      <p>Check your dashboard weekly to spot trends and optimize your approach.</p>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="content-section">
+      <h2>5. Next Steps</h2>
+      <p>You're now ready to start winning more clients with Propello. Here's your action plan:</p>
+      <ul>
+        <li>Complete your profile (5 min)</li>
+        <li>Send your first 3 proposals this week</li>
+        <li>Check your analytics after 7 days</li>
+        <li>Move on to Module 2: Mastering the 5 Frameworks</li>
+      </ul>
+      <div class="tip-box">
+        <p><strong>🎯 Your goal:</strong> Send 10 proposals in your first week. Track your response rate. Adjust your framework choice based on what works.</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-buttons">
+      <a href="/members" class="btn-ghost">← Back to Dashboard</a>
+      <a href="/members" class="btn-primary">Mark Complete →</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p>© 2026 Propello. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
