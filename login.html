@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propello — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #000; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; line-height: 1.6; }
+    .auth-card { background: #111827; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 48px 40px; width: 100%; max-width: 420px; text-align: center; }
+    .logo-icon { background: linear-gradient(135deg,#6C63FF,#3B82F6); color: #fff; font-weight: 900; width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin: 0 auto 16px; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+    .subtitle { color: rgba(255,255,255,0.4); font-size: 0.9rem; margin-bottom: 32px; }
+    .field-group { margin-bottom: 16px; text-align: left; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+    input { width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; transition: border-color 0.2s; }
+    input:focus { outline: none; border-color: #FF7300; }
+    .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg,#FF7300,#FF5500); border: none; border-radius: 12px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+    .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,115,0,0.3); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .toggle-text { margin-top: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+    .toggle-text a { color: #FF7300; text-decoration: none; cursor: pointer; font-weight: 600; }
+    .toggle-text a:hover { text-decoration: underline; }
+    .error-msg { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 10px; color: #ef4444; font-size: 0.85rem; margin-bottom: 16px; display: none; }
+    .back-link { display: block; margin-bottom: 24px; color: rgba(255,255,255,0.3); text-decoration: none; font-size: 0.85rem; }
+    .back-link:hover { color: #fff; }
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.2); border-top: 2px solid #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <a href="/" class="back-link">← Back to Propello</a>
+    <div class="logo-icon">P</div>
+    <h1 id="form-title">Sign In</h1>
+    <p class="subtitle" id="form-subtitle">Access your proposals and tools</p>
+
+    <div class="error-msg" id="error-msg"></div>
+
+    <form id="auth-form">
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" required minlength="6" autocomplete="current-password">
+      </div>
+      <button type="submit" class="submit-btn" id="submit-btn">Sign In</button>
+    </form>
+
+    <p class="toggle-text" id="toggle-text">
+      Don't have an account? <a id="toggle-link">Create one</a>
+    </p>
+  </div>
+
+<script>
+const API_BASE = '/api'
+
+// Already logged in?
+if (localStorage.getItem('propello_token')) {
+  window.location.href = '/app'
+}
+
+let isLogin = true
+
+document.getElementById('toggle-link').addEventListener('click', () => {
+  isLogin = !isLogin
+  document.getElementById('form-title').textContent = isLogin ? 'Sign In' : 'Create Account'
+  document.getElementById('form-subtitle').textContent = isLogin
+    ? 'Access your proposals and tools'
+    : 'Start creating winning proposals'
+  document.getElementById('submit-btn').textContent = isLogin ? 'Sign In' : 'Create Account'
+  document.getElementById('toggle-text').innerHTML = isLogin
+    ? 'Don\'t have an account? <a id="toggle-link">Create one</a>'
+    : 'Already have an account? <a id="toggle-link">Sign in</a>'
+  document.getElementById('error-msg').style.display = 'none'
+})
+
+document.getElementById('auth-form').addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const email = document.getElementById('email').value.trim()
+  const password = document.getElementById('password').value
+  const errorEl = document.getElementById('error-msg')
+  const btn = document.getElementById('submit-btn')
+
+  errorEl.style.display = 'none'
+  btn.disabled = true
+  btn.innerHTML = '<span class="spinner"></span> ' + (isLogin ? 'Signing in...' : 'Creating account...')
+
+  try {
+    const endpoint = isLogin ? `${API_BASE}/auth/login` : `${API_BASE}/auth/signup`
+
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Authentication failed')
+    }
+
+    if (!isLogin && data.message) {
+      // Email confirmation required
+      errorEl.style.display = 'block'
+      errorEl.textContent = '✅ ' + data.message
+      errorEl.style.background = 'rgba(5,150,105,0.1)'
+      errorEl.style.borderColor = 'rgba(5,150,105,0.3)'
+      errorEl.style.color = '#059669'
+      btn.disabled = false
+      btn.innerHTML = isLogin ? 'Sign In' : 'Create Account'
+      return
+    }
+
+    // Store session
+    localStorage.setItem('propello_token', data.token)
+    window.location.href = '/app'
+
+  } catch (err) {
+    errorEl.style.display = 'block'
+    errorEl.textContent = err.message
+    errorEl.style.background = 'rgba(239,68,68,0.1)'
+    errorEl.style.borderColor = 'rgba(239,68,68,0.3)'
+    errorEl.style.color = '#ef4444'
+  } finally {
+    btn.disabled = false
+    btn.innerHTML = isLogin ? 'Sign In' : 'Create Account'
+  }
+})
+</script>
+</body>
+</html>

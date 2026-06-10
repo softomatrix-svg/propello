@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propello — AI Proposal Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: #000; color: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    nav { width: 100%; padding: 12px 0; background: rgba(15,23,40,0.95); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+    .logo-mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon { background: linear-gradient(135deg,#6C63FF,#3B82F6); color: #fff; font-weight: 900; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+    .nav-links { display: flex; gap: 16px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; padding: 6px 12px; border-radius: 6px; }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .nav-links a.active { color: #FF7300; background: rgba(255,115,0,0.1); }
+    .nav-links .logout-btn { color: #ef4444; cursor: pointer; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    .page-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 24px; }
+    .page-title span { color: #FF7300; }
+
+    .section-tabs { display: flex; gap: 8px; margin-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; }
+    .tab-btn { background: none; border: none; color: rgba(255,255,255,0.5); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; padding: 8px 18px; cursor: pointer; border-radius: 8px; transition: all 0.2s; }
+    .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.04); }
+    .tab-btn.active { color: #FF7300; background: rgba(255,115,0,0.12); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* BUILDER */
+    .builder-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 800px) { .builder-layout { grid-template-columns: 1fr; } }
+
+    .card { background: #111827; border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 24px; }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: #FF7300; }
+
+    textarea, input, select { width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; transition: border-color 0.2s; }
+    textarea:focus, input:focus, select:focus { outline: none; border-color: #FF7300; }
+    textarea { resize: vertical; min-height: 100px; }
+    select { cursor: pointer; }
+    select option { background: #111827; }
+
+    .field-label { display: block; font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.8); margin-bottom: 4px; margin-top: 14px; }
+    .field-label:first-child { margin-top: 0; }
+
+    .generate-btn { width: 100%; margin-top: 18px; padding: 12px; background: linear-gradient(135deg,#FF7300,#FF5500); border: none; border-radius: 10px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .generate-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,115,0,0.3); }
+    .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .framework-badge { display: inline-block; background: rgba(255,115,0,0.15); color: #FF7300; font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+
+    .proposal-output { white-space: pre-wrap; font-size: 0.9rem; line-height: 1.7; color: rgba(255,255,255,0.85); min-height: 300px; }
+    .proposal-output.editing { display: none; }
+    .edit-textarea { display: none; width: 100%; min-height: 400px; padding: 14px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; line-height: 1.7; }
+    .edit-textarea.active { display: block; }
+
+    .action-bar { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+    .action-btn { padding: 8px 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .action-btn:hover { background: rgba(255,255,255,0.12); }
+    .action-btn.primary { background: #FF7300; border-color: #FF7300; }
+    .action-btn.primary:hover { background: #FF5500; }
+    .action-btn.success { background: #059669; border-color: #059669; }
+    .action-btn.danger { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: #ef4444; }
+
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.2); border-top: 2px solid #FF7300; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* PROPOSALS LIST */
+    .proposal-item { background: #111827; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 18px 22px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; }
+    .proposal-item:hover { border-color: rgba(255,115,0,0.3); transform: translateX(2px); }
+    .proposal-item .info h3 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+    .proposal-item .info p { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+    .proposal-item .framework-tag { font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; background: rgba(255,115,0,0.12); color: #FF7300; font-weight: 600; }
+    .proposal-item .status-tag { font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; background: rgba(5,150,105,0.12); color: #059669; font-weight: 600; margin-left: 8px; }
+    .proposal-item .delete-btn { background: none; border: none; color: rgba(239,68,68,0.5); cursor: pointer; font-size: 1.2rem; padding: 4px 8px; border-radius: 6px; transition: all 0.2s; }
+    .proposal-item .delete-btn:hover { color: #ef4444; background: rgba(239,68,68,0.1); }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.3); }
+    .empty-state h3 { font-size: 1.2rem; margin-bottom: 8px; color: rgba(255,255,255,0.5); }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 24px; border-radius: 10px; font-size: 0.9rem; font-weight: 600; z-index: 1000; transform: translateY(100px); opacity: 0; transition: all 0.3s; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: #059669; color: #fff; }
+    .toast.error { background: #dc2626; color: #fff; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/app" class="logo-mark">
+      <div class="logo-icon">P</div>
+      <div style="font-weight:700;font-size:0.95rem;">Propello</div>
+    </a>
+    <div class="nav-links">
+      <a href="/app" class="active" id="nav-dashboard">Dashboard</a>
+      <a href="/members">Member Area</a>
+      <a id="logout-btn" class="logout-btn">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="section-tabs">
+    <button class="tab-btn active" data-tab="builder">New Proposal</button>
+    <button class="tab-btn" data-tab="proposals">My Proposals</button>
+  </div>
+
+  <!-- BUILDER -->
+  <div class="tab-content active" id="tab-builder">
+    <div class="builder-layout">
+      <div class="card">
+        <div class="card-title">✏️ Job Details</div>
+        <label class="field-label">Proposal Title</label>
+        <input type="text" id="proposal-title" placeholder="e.g. Web Developer for E-commerce Site">
+
+        <label class="field-label">Client Name (optional)</label>
+        <input type="text" id="client-name" placeholder="e.g. Acme Corp">
+
+        <label class="field-label">Job Description</label>
+        <textarea id="job-desc" rows="8" placeholder="Paste the job description or client brief here..."></textarea>
+
+        <label class="field-label">Proposal Framework</label>
+        <select id="framework-select">
+          <option value="problem-solution">🔥 Problem → Solution</option>
+          <option value="storytelling">📖 Storytelling</option>
+          <option value="before-after">✨ Before → After Bridge</option>
+          <option value="sandler">🎯 Sandler (Reverse Selling)</option>
+          <option value="consultative">💼 Consultative Selling</option>
+        </select>
+
+        <button class="generate-btn" id="generate-btn">🚀 Generate Proposal</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📄 Your Proposal</div>
+        <div id="framework-badge" class="framework-badge" style="display:none;"></div>
+        <div id="proposal-output" class="proposal-output">Enter job details on the left and click <strong>Generate Proposal</strong> to create your AI-powered proposal.</div>
+        <textarea id="edit-textarea" class="edit-textarea"></textarea>
+        <div class="action-bar" id="action-bar" style="display:none;">
+          <button class="action-btn" id="edit-btn">✏️ Edit</button>
+          <button class="action-btn primary" id="copy-btn">📋 Copy</button>
+          <button class="action-btn success" id="save-btn">💾 Save Proposal</button>
+          <button class="action-btn" id="regenerate-btn">🔄 Regenerate</button>
+        </div>
+        <div class="action-bar" id="edit-mode-bar" style="display:none;">
+          <button class="action-btn success" id="done-editing-btn">✅ Done Editing</button>
+          <button class="action-btn" id="cancel-edit-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROPOSALS LIST -->
+  <div class="tab-content" id="tab-proposals">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h2 style="font-size:1.3rem;">📂 My Proposals</h2>
+      <button class="action-btn primary" onclick="switchTab('builder')">+ New Proposal</button>
+    </div>
+    <div id="proposals-list"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const API_BASE = '/api'
+
+let currentProposal = null
+let currentProposalId = null
+let token = null
+
+// Auth check
+async function checkAuth() {
+  token = localStorage.getItem('propello_token')
+  if (!token) {
+    window.location.href = '/login'
+    return
+  }
+  try {
+    const res = await fetch(`${API_BASE}/auth/me`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    if (!res.ok) {
+      localStorage.removeItem('propello_token')
+      window.location.href = '/login'
+    }
+  } catch {
+    // Offline — continue anyway
+  }
+}
+
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast')
+  toast.textContent = message
+  toast.className = `toast ${type}`
+  setTimeout(() => toast.classList.add('show'), 10)
+  setTimeout(() => toast.classList.remove('show'), 3000)
+}
+
+// Tab switching
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'))
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active')
+  document.getElementById(`tab-${tab}`).classList.add('active')
+  if (tab === 'proposals') loadProposals()
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab))
+})
+
+// Generate proposal
+document.getElementById('generate-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('generate-btn')
+  const title = document.getElementById('proposal-title').value.trim()
+  const jobDesc = document.getElementById('job-desc').value.trim()
+  const framework = document.getElementById('framework-select').value
+
+  if (!title) { showToast('Please enter a proposal title', 'error'); return }
+  if (jobDesc.length < 20) { showToast('Job description must be at least 20 characters', 'error'); return }
+
+  btn.disabled = true
+  btn.innerHTML = '<span class="spinner"></span> Generating...'
+
+  document.getElementById('proposal-output').textContent = 'Generating your proposal...'
+
+  try {
+    const res = await fetch(`${API_BASE}/proposals/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ jobDescription: jobDesc, framework })
+    })
+
+    if (!res.ok) {
+      const err = await res.json()
+      throw new Error(err.error || 'Generation failed')
+    }
+
+    const data = await res.json()
+    currentProposal = data.proposal
+    currentProposalId = null
+
+    document.getElementById('framework-badge').style.display = 'inline-block'
+    document.getElementById('framework-badge').textContent = data.frameworkName
+    document.getElementById('proposal-output').textContent = data.proposal
+    document.getElementById('proposal-output').classList.remove('editing')
+    document.getElementById('edit-textarea').value = data.proposal
+    document.getElementById('edit-textarea').classList.remove('active')
+    document.getElementById('action-bar').style.display = 'flex'
+    document.getElementById('edit-mode-bar').style.display = 'none'
+
+    showToast('Proposal generated!')
+
+  } catch (err) {
+    document.getElementById('proposal-output').textContent = '❌ ' + err.message
+    showToast(err.message, 'error')
+  } finally {
+    btn.disabled = false
+    btn.innerHTML = '🚀 Generate Proposal'
+  }
+})
+
+// Edit
+document.getElementById('edit-btn').addEventListener('click', () => {
+  document.getElementById('proposal-output').classList.add('editing')
+  document.getElementById('edit-textarea').classList.add('active')
+  document.getElementById('action-bar').style.display = 'none'
+  document.getElementById('edit-mode-bar').style.display = 'flex'
+})
+
+document.getElementById('done-editing-btn').addEventListener('click', () => {
+  const edited = document.getElementById('edit-textarea').value
+  currentProposal = edited
+  document.getElementById('proposal-output').textContent = edited
+  document.getElementById('proposal-output').classList.remove('editing')
+  document.getElementById('edit-textarea').classList.remove('active')
+  document.getElementById('action-bar').style.display = 'flex'
+  document.getElementById('edit-mode-bar').style.display = 'none'
+  showToast('Changes saved locally')
+})
+
+document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+  document.getElementById('edit-textarea').value = currentProposal
+  document.getElementById('proposal-output').classList.remove('editing')
+  document.getElementById('edit-textarea').classList.remove('active')
+  document.getElementById('action-bar').style.display = 'flex'
+  document.getElementById('edit-mode-bar').style.display = 'none'
+})
+
+// Copy
+document.getElementById('copy-btn').addEventListener('click', () => {
+  navigator.clipboard.writeText(currentProposal)
+    .then(() => showToast('Copied to clipboard!'))
+    .catch(() => showToast('Failed to copy', 'error'))
+})
+
+// Regenerate
+document.getElementById('regenerate-btn').addEventListener('click', () => {
+  document.getElementById('generate-btn').click()
+})
+
+// Save
+document.getElementById('save-btn').addEventListener('click', async () => {
+  const title = document.getElementById('proposal-title').value.trim()
+  const clientName = document.getElementById('client-name').value.trim()
+  const jobDesc = document.getElementById('job-desc').value.trim()
+  const framework = document.getElementById('framework-select').value
+
+  if (!title || !currentProposal) {
+    showToast('Generate a proposal first', 'error')
+    return
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/proposals/save`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        id: currentProposalId,
+        title,
+        client_name: clientName || null,
+        job_description: jobDesc,
+        framework,
+        ai_generated_proposal: currentProposal,
+        status: 'draft'
+      })
+    })
+
+    if (!res.ok) throw new Error('Save failed')
+    const data = await res.json()
+    currentProposalId = data.id
+    showToast('Proposal saved!')
+  } catch (err) {
+    showToast('Failed to save', 'error')
+  }
+})
+
+// Load proposals list
+async function loadProposals() {
+  const list = document.getElementById('proposals-list')
+  list.innerHTML = '<div class="empty-state"><div class="spinner" style="margin:0 auto 12px;"></div><p>Loading...</p></div>'
+
+  try {
+    const res = await fetch(`${API_BASE}/proposals`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    if (!res.ok) throw new Error('Failed to load')
+    const proposals = await res.json()
+
+    if (!proposals.length) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <h3>No proposals yet</h3>
+          <p>Generate your first proposal to get started.</p>
+        </div>`
+      return
+    }
+
+    list.innerHTML = proposals.map(p => `
+      <div class="proposal-item" data-id="${p.id}">
+        <div class="info">
+          <h3>${escHtml(p.title)}</h3>
+          <p>${p.client_name ? escHtml(p.client_name) + ' · ' : ''}${new Date(p.created_at).toLocaleDateString()} · ${p.job_description.slice(0, 80)}...</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="framework-tag">${escHtml(p.framework)}</span>
+          <span class="status-tag">${p.status}</span>
+          <button class="delete-btn" data-id="${p.id}" onclick="deleteProposal('${p.id}')">✕</button>
+        </div>
+      </div>
+    `).join('')
+
+    // Click to open
+    list.querySelectorAll('.proposal-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-btn')) return
+        openProposal(item.dataset.id)
+      })
+    })
+
+  } catch (err) {
+    list.innerHTML = `<div class="empty-state"><p style="color:#ef4444;">❌ Failed to load proposals</p></div>`
+  }
+}
+
+function escHtml(s) {
+  const d = document.createElement('div')
+  d.textContent = s || ''
+  return d.innerHTML
+}
+
+async function openProposal(id) {
+  try {
+    const res = await fetch(`${API_BASE}/proposals?id=${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    if (!res.ok) throw new Error('Not found')
+    const p = await res.json()
+
+    document.getElementById('proposal-title').value = p.title
+    document.getElementById('client-name').value = p.client_name || ''
+    document.getElementById('job-desc').value = p.job_description
+    document.getElementById('framework-select').value = p.framework
+
+    currentProposal = p.ai_generated_proposal || p.edited_proposal
+    currentProposalId = p.id
+
+    document.getElementById('framework-badge').style.display = 'inline-block'
+    document.getElementById('framework-badge').textContent = p.framework
+    document.getElementById('proposal-output').textContent = currentProposal
+    document.getElementById('proposal-output').classList.remove('editing')
+    document.getElementById('edit-textarea').value = currentProposal
+    document.getElementById('edit-textarea').classList.remove('active')
+    document.getElementById('action-bar').style.display = 'flex'
+    document.getElementById('edit-mode-bar').style.display = 'none'
+
+    switchTab('builder')
+  } catch {
+    showToast('Failed to load proposal', 'error')
+  }
+}
+
+async function deleteProposal(id) {
+  if (!confirm('Delete this proposal?')) return
+  try {
+    const res = await fetch(`${API_BASE}/proposals?id=${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    if (!res.ok) throw new Error('Delete failed')
+    showToast('Proposal deleted')
+    loadProposals()
+  } catch {
+    showToast('Failed to delete', 'error')
+  }
+}
+
+// Logout
+document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem('propello_token')
+  window.location.href = '/login'
+})
+
+// Init
+checkAuth()
+</script>
+
+</body>
+</html>
