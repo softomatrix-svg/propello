@@ -1,9 +1,7 @@
 // POST /api/proposals/generate
-// Generate an AI proposal from a job description using a selected framework
-import { getSupabaseClient } from '../_lib/supabase.js'
+const { getUser, insert } = require('../_lib/supabase.js')
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
-
 const FRAMEWORKS = {
   'problem-solution': {
     name: 'Problem → Solution',
@@ -77,46 +75,31 @@ TONE: Advisor-like, strategic, insight-driven. You're a partner, not a vendor.`
   }
 }
 
-export default async function handler(req, res) {
-  // CORS
+module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
   if (req.method === 'OPTIONS') return res.status(200).end()
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
-  }
+  const token = req.headers.authorization?.replace('Bearer ', '')
+  if (!token) return res.status(401).json({ error: 'Missing authorization' })
 
-  // Auth check
-  const supabase = getSupabaseClient()
-  const authHeader = req.headers.authorization
-  if (!authHeader) {
-    return res.status(401).json({ error: 'Missing authorization' })
-  }
-  const token = authHeader.replace('Bearer ', '')
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-  if (authError || !user) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
+  const { status: authStatus } = await getUser(token)
+  if (authStatus >= 400) return res.status(401).json({ error: 'Unauthorized' })
 
   const { jobDescription, framework } = req.body
-
   if (!jobDescription || jobDescription.trim().length < 20) {
     return res.status(400).json({ error: 'Job description is too short' })
   }
-
   if (!FRAMEWORKS[framework]) {
-    return res.status(400).json({
-      error: `Invalid framework. Choose: ${Object.keys(FRAMEWORKS).join(', ')}`
-    })
+    return res.status(400).json({ error: `Invalid framework. Choose: ${Object.keys(FRAMEWORKS).join(', ')}` })
   }
 
-  const frameworkConfig = FRAMEWORKS[framework]
+  const fw = FRAMEWORKS[framework]
 
-  // Call OpenRouter
   try {
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const aiRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -127,36 +110,35 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'openai/gpt-4o-mini',
         messages: [
-          { role: 'system', content: frameworkConfig.systemPrompt },
-          { role: 'user', content: `Write a freelance proposal for this job description using the "${frameworkConfig.name}" framework. Make it compelling, specific, and professional.
+          { role: 'system', content: fw.systemPrompt },
+          { role: 'user', content: `Write a freelance proposal for this job description using the "${fw.name}" framework. Make it compelling, specific, and professional.
 
 JOB DESCRIPTION:
 ${jobDescription}
 
-Write the full proposal with clear section headings matching the ${frameworkConfig.name} structure.` }
+Write the full proposal with clear section headings matching the ${fw.name} structure.` }
         ],
         temperature: 0.7,
         max_tokens: 2000
       })
     })
 
-    if (!response.ok) {
-      const err = await response.text()
+    if (!aiRes.ok) {
+      const err = await aiRes.text()
       console.error('OpenRouter error:', err)
       return res.status(502).json({ error: 'AI generation failed. Please try again.' })
     }
 
-    const data = await response.json()
+    const data = await aiRes.json()
     const proposal = data.choices[0].message.content
 
     return res.status(200).json({
       framework: framework,
-      frameworkName: frameworkConfig.name,
+      frameworkName: fw.name,
       proposal: proposal
     })
-
   } catch (err) {
     console.error('Generation error:', err)
-    return res.status(500).json({ error: 'Internal server error' })
+    return res.status(500).json({ error: 'AI generation failed' })
   }
 }

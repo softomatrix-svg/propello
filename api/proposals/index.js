@@ -1,54 +1,43 @@
-// GET  /api/proposals         → list user's proposals
-// GET  /api/proposals/[id]    → get single proposal
-// DELETE /api/proposals/[id]  → delete a proposal
-import { getSupabaseClient } from '../_lib/supabase.js'
+// GET /api/proposals — list or get single proposal
+// DELETE /api/proposals?id=xxx — delete a proposal
+const { getUser, query, del } = require('../_lib/supabase.js')
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, DELETE, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
   if (req.method === 'OPTIONS') return res.status(200).end()
 
-  const supabase = getSupabaseClient()
   const token = req.headers.authorization?.replace('Bearer ', '')
   if (!token) return res.status(401).json({ error: 'Missing authorization' })
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-  if (authError || !user) return res.status(401).json({ error: 'Unauthorized' })
+  const { data: user } = await getUser(token)
 
-  // Extract ID from query (/api/proposals?id=xxx or /api/proposals/xxx)
-  const id = req.query.id || req.url.split('/').pop()
+  const id = req.query.id
 
   if (req.method === 'DELETE') {
     if (!id) return res.status(400).json({ error: 'Proposal ID required' })
-    const { error } = await supabase
-      .from('proposals')
-      .delete()
-      .eq('id', id)
-      .eq('user_id', user.id)
-    if (error) return res.status(500).json({ error: error.message })
+    const r = await del('proposals', id, token)
+    if (r.status >= 400) return res.status(500).json({ error: 'Delete failed' })
     return res.status(200).json({ success: true })
   }
 
   if (req.method === 'GET') {
-    if (id && id !== 'list' && id !== 'proposals') {
-      // Single proposal
-      const { data, error } = await supabase
-        .from('proposals')
-        .select('*')
-        .eq('id', id)
-        .eq('user_id', user.id)
-        .single()
-      if (error) return res.status(404).json({ error: 'Not found' })
-      return res.status(200).json(data)
+    if (id) {
+      const r = await query('proposals', {
+        filter: { id, user_id: user.id },
+        single: true,
+        token
+      })
+      if (r.status >= 400 || !r.data?.length) return res.status(404).json({ error: 'Not found' })
+      return res.status(200).json(r.data[0])
     } else {
-      // List all
-      const { data, error } = await supabase
-        .from('proposals')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-      if (error) return res.status(500).json({ error: error.message })
-      return res.status(200).json(data)
+      const r = await query('proposals', {
+        filter: { user_id: user.id },
+        order: 'created_at.desc',
+        token
+      })
+      if (r.status >= 400) return res.status(500).json({ error: 'Failed to load' })
+      return res.status(200).json(r.data || [])
     }
   }
 

@@ -1,7 +1,7 @@
-// POST /api/auth/signup - Create a new account
-import { getSupabaseClient } from '../_lib/supabase.js'
+// POST /api/auth/signup
+const { signUp } = require('../_lib/supabase.js')
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
@@ -12,27 +12,26 @@ export default async function handler(req, res) {
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' })
   if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' })
 
-  const supabase = getSupabaseClient()
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { emailRedirectTo: 'https://propello-omega.vercel.app/app' }
-  })
+  try {
+    const { status, data } = await signUp(email, password)
 
-  if (error) {
-    return res.status(400).json({ error: error.message })
-  }
+    if (status >= 400) {
+      return res.status(status).json({ error: data.msg || data.error_description || data.error || 'Signup failed' })
+    }
 
-  if (data.user && !data.session) {
-    // Email confirmation required
-    return res.status(200).json({
-      message: 'Account created! Check your email for the confirmation link.',
+    if (data.user && !data.access_token) {
+      return res.status(200).json({
+        message: 'Account created! Check your email for the confirmation link.',
+        user: { id: data.user.id, email: data.user.email }
+      })
+    }
+
+    return res.status(201).json({
+      token: data.access_token,
       user: { id: data.user.id, email: data.user.email }
     })
+  } catch (err) {
+    console.error('Signup error:', err)
+    return res.status(500).json({ error: 'Internal server error' })
   }
-
-  return res.status(201).json({
-    token: data.session.access_token,
-    user: { id: data.user.id, email: data.user.email }
-  })
 }
